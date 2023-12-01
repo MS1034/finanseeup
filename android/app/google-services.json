@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "694593299609",
+    "project_id": "finanseeup",
+    "storage_bucket": "finanseeup.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694593299609:android:041089c25f0a00b4248408",
+        "android_client_info": {
+          "package_name": "com.example.finanseeup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694593299609-lqo3cifin1mli6r1rtkkdno6iokhk14p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSTNFmLYLn99f5JKzXGgRVn7ONLZ1Q9Rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694593299609-lqo3cifin1mli6r1rtkkdno6iokhk14p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "694593299609-qkkmrlppgp2hqftm3qe26k8jis3ra4hi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.finanseeup.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
