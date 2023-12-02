@@ -11,5 +11,8 @@ class TextStrings
   static const String onBoardingSubTitle3 ="Tailor Finnanse Up to Fit Your Unique Financial Style";
   static const String onBoardingCounter3 ="3/3";
 
+  static const String welcomeTitle ="Join Finnanse Up Today";
+  static const String welcomeSubTitle ="Take control of your money. Sign in or sign up to unlock a world of possibilities.";
+
 }
 

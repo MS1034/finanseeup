@@ -1,7 +1,7 @@
 import 'package:finanseeup/models/on_boarding_model.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
-import 'package:finanseeup/consts/image_srings.dart';
+import 'package:finanseeup/consts/image_strings.dart';
 import 'package:finanseeup/consts/color_strings.dart';
 import 'package:finanseeup/consts/text_strings.dart';
 import 'package:finanseeup/consts/size_strings.dart';
@@ -34,7 +34,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             title: TextStrings.onBoardingTitle1,
             subTitle: TextStrings.onBoardingSubTitle1,
             height: size.height * 0.4,
-            counterText: TextStrings.onBoardingCounter1,
             bgColor: color),
       ),
       OnBoardingPage(
@@ -43,7 +42,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             title: TextStrings.onBoardingTitle2,
             subTitle: TextStrings.onBoardingSubTitle2,
             height: size.height * 0.4,
-            counterText: TextStrings.onBoardingCounter2,
             bgColor: color),
       ),
       OnBoardingPage(
@@ -52,7 +50,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             title: TextStrings.onBoardingTitle3,
             subTitle: TextStrings.onBoardingSubTitle3,
             height: size.height * 0.4,
-            counterText: TextStrings.onBoardingCounter3,
             bgColor: color),
       ),
     ];
@@ -77,7 +74,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   activeIndex: currentPage,
                   count: 3,
                   effect: WormEffect(
-                    dotHeight: 15.0,
+                    dotHeight: 3.0,
                     activeDotColor: Colors.teal,
                   ),
                 ));
@@ -93,7 +90,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   onPageChangeCallback(int activePageIndex) {
     setState(() {
       currentPage = activePageIndex;
-      print(currentPage);
     });
   }
 

@@ -9,6 +9,7 @@ class OnBoardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: const EdgeInsets.all(30.0),
       color: model.bgColor,
@@ -17,6 +18,7 @@ class OnBoardingPage extends StatelessWidget {
         children: [
           Image(
             image: AssetImage(model.image),
+
           ),
           Column(children: [
             Text(

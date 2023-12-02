@@ -1,6 +1,7 @@
 import 'package:finanseeup/screens/home.dart';
-import 'package:finanseeup/screens/on_boarding_screen.dart';
+import 'package:finanseeup/screens/on_boarding.dart';
 import 'package:finanseeup/screens/splash.dart';
+import 'package:finanseeup/screens/welcome.dart';
 import 'package:finanseeup/utils/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home:  OnBoardingScreen(),
+      home:  Welcome(),
     );
   }
 }

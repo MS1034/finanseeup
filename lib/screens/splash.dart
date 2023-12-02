@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:finanseeup/consts/image_srings.dart';
+import 'package:finanseeup/consts/image_strings.dart';
 class SplashScreen extends StatelessWidget
 {
   const SplashScreen({super.key, required this.title});
