@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget
 
         children: [
 
-          Positioned(child: Image(image: AssetImage(logo), )),
+          Positioned(child: Image(image: AssetImage(ImageAssets.logo), )),
           SizedBox(height: 20),
 
           Text(
