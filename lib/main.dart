@@ -1,4 +1,5 @@
 import 'package:finanseeup/screens/home.dart';
+import 'package:finanseeup/screens/splash.dart';
 import 'package:finanseeup/utils/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Authentication',
-      theme: TAppTheme.lightTheme,
-      darkTheme: TAppTheme.darkTheme,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
       home: const HomePage(title: 'Forget Password Page'),
     );

@@ -28,6 +28,7 @@ dependencies:
   firebase_storage: ^11.5.3
   cloud_firestore: ^4.13.3
   flutter_dotenv: ^5.1.0
+  flutter_native_splash: ^2.3.6
 
 
 dev_dependencies:
@@ -45,6 +46,11 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+#flutter_native_splash:
+#  color: "#42a5f5"
+#  color_dark: "#272727"
+#  image: assets/images/coin.jpeg
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -53,6 +59,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/images/
   fonts:
       - family: Poppins
         fonts:
