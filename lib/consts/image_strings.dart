@@ -6,5 +6,8 @@ class ImageAssets
   static const String onBoarding2 ="assets/images/Onboarding2.png";
   static const String onBoarding3 ="assets/images/Onboarding3.png";
   static const String welcome ="assets/images/Onboarding5.png";
+
+  static const String googleLogo ="assets/images/Glogo.png";
+  static const String login ="assets/images/login.png";
 }
 

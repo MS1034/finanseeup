@@ -2,50 +2,43 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: Colors.teal,
 
-    primarySwatch: Colors.teal
-    ,
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all(Colors.tealAccent),
-          side: MaterialStateProperty.all(BorderSide(color: Colors.tealAccent)),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))
-      ),
-
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all(Colors.white),
-        backgroundColor: MaterialStateProperty.all(Colors.tealAccent),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))
-
-      ),
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: Colors.teal,
+        brightness: Brightness.dark
     ),
     fontFamily: "Poppins",
     textTheme: const TextTheme(
       titleMedium: TextStyle(
-          fontWeight: FontWeight.w900),
-
+        fontWeight: FontWeight.w900,
+      ),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
     ),
+    // textTheme: const TextTheme(
+    //   titleMedium: TextStyle(fontWeight: FontWeight.w900),
+    // ),
   );
-
 
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primarySwatch: Colors.teal,
-    primaryColor: Colors.teal,
+    // primaryColor: Colors.teal,
     fontFamily: "Poppins",
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all(Colors.tealAccent),
-      ),
+    scaffoldBackgroundColor: Colors.white,
+
+
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: Colors.teal,
+        brightness: Brightness.light
     ),
     textTheme: const TextTheme(
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
       titleMedium: TextStyle(
-          fontWeight: FontWeight.w900), // Adjust the fontWeight as needed
-      // You can customize other text styles here...
+          fontWeight: FontWeight.w900),
     ),
   );
 }

@@ -1,5 +1,7 @@
 import 'package:finanseeup/models/on_boarding_model.dart';
+import 'package:finanseeup/screens/welcome.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:finanseeup/consts/image_strings.dart';
 import 'package:finanseeup/consts/color_strings.dart';
@@ -9,6 +11,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../utils/theme.dart';
 import '../widgets/on_boarding_page.dart';
+import 'login.dart';
 
 class OnBoardingScreen extends StatefulWidget {
    const OnBoardingScreen({Key? key}) : super(key: key);
@@ -25,7 +28,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final color = Theme.of(context).colorScheme.background;
+    final color = Theme.of(context).scaffoldBackgroundColor;
 
     final pages = [
       OnBoardingPage(
@@ -44,14 +47,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             height: size.height * 0.4,
             bgColor: color),
       ),
-      OnBoardingPage(
-        model: OnBoardingModel(
-            image: ImageAssets.onBoarding3,
-            title: TextStrings.onBoardingTitle3,
-            subTitle: TextStrings.onBoardingSubTitle3,
-            height: size.height * 0.4,
-            bgColor: color),
-      ),
+      // OnBoardingPage(
+      //   model: OnBoardingModel(
+      //       image: ImageAssets.onBoarding3,
+      //       title: TextStrings.onBoardingTitle3,
+      //       subTitle: TextStrings.onBoardingSubTitle3,
+      //       height: size.height * 0.4,
+      //       bgColor: color),
+      // ),
+      Welcome(),
+
     ];
     return Scaffold(
       body: Stack(
@@ -90,7 +95,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   onPageChangeCallback(int activePageIndex) {
     setState(() {
       currentPage = activePageIndex;
+
     });
+    // if(currentPage == 2)
+    // {
+    //   Get.to(const Welcome());
+    // }
   }
 
 }

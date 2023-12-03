@@ -14,5 +14,21 @@ class TextStrings
   static const String welcomeTitle ="Join Finnanse Up Today";
   static const String welcomeSubTitle ="Take control of your money. Sign in or sign up to unlock a world of possibilities.";
 
+  static const String login="Log In ";
+  static const String signin="Sign In ";
+  static const String noAccount="Don't have an account? ";
+  static const String signUp="Sign Up";
+  static const String forgetPassword="Forget Password?";
+  static const String emailHint="abc@gmail.com";
+  static const String emailLabel="Email *";
+  static const String passwordHint="*************";
+  static const String passwordLabel="Password *";
+  static const String signinWithGoogle="Sign In with Google";
+  static const String signinTitle="Welcome Back,";
+  static const String signinBody="Empower your financial journey as we help you manage and maximize your money with ease.";
+  static const String rememberMe="Remember Me";
+
+
+
 }
 
