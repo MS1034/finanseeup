@@ -1,12 +1,14 @@
+import 'package:finanseeup/controllers/login_controller.dart';
 import 'package:finanseeup/models/on_boarding_model.dart';
-import 'package:finanseeup/screens/on_boarding.dart';
-import 'package:finanseeup/screens/sign_up.dart';
+import 'package:finanseeup/views/on_boarding.dart';
+import 'package:finanseeup/views/sign_up.dart';
 import 'package:finanseeup/widgets/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../consts/image_strings.dart';
 import '../consts/text_strings.dart';
+import '../controllers/signup_controller.dart';
 import 'login.dart';
 
 class Welcome extends StatelessWidget {
@@ -45,8 +47,8 @@ class Welcome extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               OutlinedButton(
-                  onPressed: () => {Get.to(const Login())}, child: Text("Log In")),
-              ElevatedButton(onPressed: () => {Get.to(const SignUp())}, child: Text("Sign Up"))
+                  onPressed: () => {Get.to( SignInController().getView())}, child: Text("Log In")),
+              ElevatedButton(onPressed: () => Get.to(() => SignUpController().getView()), child: Text("Sign Up"))
             ],
           )
         ],

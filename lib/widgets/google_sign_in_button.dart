@@ -4,8 +4,9 @@ import 'package:finanseeup/consts/text_strings.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String text;
 
-  const GoogleSignInButton({Key? key, required this.onPressed}) : super(key: key);
+  const GoogleSignInButton({Key? key, required this.onPressed,required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class GoogleSignInButton extends StatelessWidget {
         children: [
           Image.asset(ImageAssets.googleLogo,height: 24.0),
           SizedBox(width: 10.0),
-          Text(TextStrings.signinWithGoogle),
+          Text(text),
         ],
       ),
     );

@@ -3,18 +3,23 @@ import 'package:finanseeup/widgets/login_Form.dart';
 import 'package:flutter/material.dart';
 import 'package:finanseeup/consts/image_strings.dart';
 import 'package:finanseeup/consts/text_strings.dart';
-import 'package:finanseeup/screens/sign_up.dart';
+import 'package:finanseeup/views/sign_up.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+import '../controllers/signup_controller.dart';
+import '../models/login_model.dart';
 
+class LoginView extends StatefulWidget {
+   LoginView({Key? key,required this.model}) : super(key: key);
+
+  final LoginModel model;
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginViewState extends State<LoginView> {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -89,7 +94,7 @@ class _LoginState extends State<Login> {
                     softWrap: true,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Get.to(() => SignUpController().getView()),
                     child: const Text(
                       TextStrings.signUp,
                       style: TextStyle(fontSize: 12),
@@ -105,7 +110,7 @@ class _LoginState extends State<Login> {
               SizedBox(
                 height: 10,
               ),
-              Container(width: double.infinity,child: GoogleSignInButton(onPressed: () => {})),
+              Container(width: double.infinity,child: GoogleSignInButton(onPressed: () => {},text: TextStrings.signinWithGoogle,)),
             ],
           ),
         ),

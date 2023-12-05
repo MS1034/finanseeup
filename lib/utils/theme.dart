@@ -10,6 +10,9 @@ class AppTheme {
     fontFamily: "Poppins",
     textTheme: const TextTheme(
       titleMedium: TextStyle(
+        fontWeight: FontWeight.w700,
+      ),
+      titleLarge: TextStyle(
         fontWeight: FontWeight.w900,
       ),
       headlineMedium: TextStyle(
@@ -38,7 +41,11 @@ class AppTheme {
         fontWeight: FontWeight.w900,
       ),
       titleMedium: TextStyle(
-          fontWeight: FontWeight.w900),
+        fontWeight: FontWeight.w700,
+      ),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
     ),
   );
 }

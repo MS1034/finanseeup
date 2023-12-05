@@ -1,5 +1,5 @@
 import 'package:finanseeup/models/on_boarding_model.dart';
-import 'package:finanseeup/screens/welcome.dart';
+import 'package:finanseeup/views/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
@@ -11,7 +11,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../utils/theme.dart';
 import '../widgets/on_boarding_page.dart';
-import 'login.dart';
 
 class OnBoardingScreen extends StatefulWidget {
    const OnBoardingScreen({Key? key}) : super(key: key);

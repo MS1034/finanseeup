@@ -1,20 +1,30 @@
-import 'package:finanseeup/consts/image_strings.dart';
-import 'package:finanseeup/consts/text_strings.dart';
 import 'package:finanseeup/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 
+import '../consts/text_strings.dart';
 import 'email_field.dart';
 
-class LogInForm extends StatefulWidget {
-  const LogInForm({super.key});
+class SignupForm extends StatefulWidget {
+  SignupForm({Key? key}) : super(key: key);
+
+
+  bool _isChecked = false; // Replace false with your initial value
+  bool get isChecked => _isChecked;
+
+  set isChecked(bool value) {
+    _isChecked = value;
+  }
 
   @override
-  State<LogInForm> createState() => _LogInFormState();
+  _SignupFormState createState() => _SignupFormState();
 }
 
-class _LogInFormState extends State<LogInForm> {
+class _SignupFormState extends State<SignupForm> {
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _reEnterPasswordController = TextEditingController();
 
   bool _isChecked = false; // Replace false with your initial value
   bool get isChecked => _isChecked;
@@ -25,12 +35,55 @@ class _LogInFormState extends State<LogInForm> {
 
   @override
   Widget build(BuildContext context) {
-    bool _obscureText = true;
     return Center(
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: TextFormField(
+                    controller: _firstNameController,
+                    decoration: const InputDecoration(
+                      labelText: TextStrings.labelFirstName,
+                      hintText: TextStrings.HintFirstName,
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+
+                        vertical: 0,
+                      ),
+                    ),
+                    keyboardType: TextInputType.name,
+                  ),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: _lastNameController,
+                    decoration: const InputDecoration(
+                      labelText: TextStrings.labelLastName,
+                      hintText: TextStrings.HintLastName,
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+
+                        vertical: 0,
+                      ),
+                    ),
+                    keyboardType: TextInputType.name,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -49,8 +102,20 @@ class _LogInFormState extends State<LogInForm> {
               children: <Widget>[
                 Expanded(
                   child: PasswordField(
-                      controller: _emailController,
+                      controller: _passwordController,
                       labelText: TextStrings.passwordLabel,
+                      hintText: TextStrings.passwordHint),
+                ),
+              ],
+            ),
+            SizedBox(height: 15.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: PasswordField(
+                      controller: _reEnterPasswordController,
+                      labelText: TextStrings.reEnterPasswordLabel,
                       hintText: TextStrings.passwordHint),
                 ),
               ],
@@ -100,24 +165,6 @@ class _LogInFormState extends State<LogInForm> {
               ],
             ),
 
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Handle sign-in action
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     primary: Colors.white,
-            //     onPrimary: Colors.black,
-            //     padding: EdgeInsets.symmetric(horizontal: 16.0),
-            //   ),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Image.asset(ImageAssets.googleLogo, width: 24.0, height: 24.0),
-            //       SizedBox(width: 10.0),
-            //       Text(TextStrings.signinWithGoogle),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),
