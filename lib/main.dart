@@ -11,15 +11,17 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
+import 'data/repositories/authentication_repository.dart';
+
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) => Get.put(AuthenticationRepository()),
+  );
   runApp(const MyApp());
 
-      .then((value) => => Get.put(AuthenicationRepository()),
-  );
+
 }
 
 class MyApp extends StatelessWidget {
