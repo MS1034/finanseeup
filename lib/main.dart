@@ -1,3 +1,4 @@
+import 'package:finanseeup/bindings/general_bindings.dart';
 import 'package:finanseeup/firebase_options.dart';
 import 'package:finanseeup/views/home.dart';
 import 'package:finanseeup/views/on_boarding.dart';
@@ -16,9 +17,9 @@ import 'data/repositories/authentication_repository.dart';
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) => Get.put(AuthenticationRepository()),
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) => Get.put(AuthenticationRepository()),  );
   runApp(const MyApp());
 
 
@@ -29,12 +30,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceStorage = GetStorage();
+
+    return  GetMaterialApp(
+      title: 'Finansee Up',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      initialBinding: GeneralBindings(),
+      themeMode: ThemeMode.system,
+      home: deviceStorage.read("IsFirstTime")==false?Welcome():OnBoardingView(),
+    );
+
+     GetMaterialApp(
+      title: 'Finansee Up',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      home: OnBoardingView(),
+    );
     return GetMaterialApp(
       title: 'Finansee Up',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: OnBoardingScreen(),
+      home: OnBoardingView(),
     );
   }
 }

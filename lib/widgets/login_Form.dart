@@ -1,8 +1,9 @@
-import 'package:finanseeup/consts/image_strings.dart';
-import 'package:finanseeup/consts/text_strings.dart';
+import 'package:finanseeup/utils/consts/image_strings.dart';
+import 'package:finanseeup/utils/consts/text_strings.dart';
 import 'package:finanseeup/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/validators/validations.dart';
 import 'email_field.dart';
 
 class LogInForm extends StatefulWidget {
@@ -37,8 +38,9 @@ class _LogInFormState extends State<LogInForm> {
                 Expanded(
                   child: EmailField(
                     controller: _emailController,
-                    labelText: TextStrings.emailLabel,
-                    hintText: TextStrings.emailHint,
+                    labelText: AppTexts.emailLabel,
+                    hintText: AppTexts.emailHint,
+                    validator: (value) => AppValidations.validateEmail(value),
                   ),
                 ),
               ],
@@ -48,11 +50,12 @@ class _LogInFormState extends State<LogInForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(
-                  child: PasswordField(
-                      controller: _emailController,
-                      labelText: TextStrings.passwordLabel,
-                      hintText: TextStrings.passwordHint),
-                ),
+                    child: PasswordField(
+                  controller: _emailController,
+                  labelText: AppTexts.passwordLabel,
+                  hintText: AppTexts.passwordHint,
+                  validator: (value) => AppValidations.validatePassword(value),
+                )),
               ],
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -66,7 +69,7 @@ class _LogInFormState extends State<LogInForm> {
                       });
                     },
                   ),
-                  const Text(TextStrings.rememberMe,
+                  const Text(AppTexts.rememberMe,
                       style: TextStyle(fontSize: 12, color: Colors.grey))
                 ],
               ),
@@ -77,7 +80,7 @@ class _LogInFormState extends State<LogInForm> {
                       Size(150, 5)), // Set the minimum size
                 ),
                 child: const Text(
-                  TextStrings.forgetPassword,
+                  AppTexts.forgetPassword,
                   style: TextStyle(fontSize: 12),
                 ),
               ),
@@ -91,7 +94,7 @@ class _LogInFormState extends State<LogInForm> {
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        TextStrings.signin,
+                        AppTexts.signin,
                         style: TextStyle(fontSize: 14),
                       ),
                     ),

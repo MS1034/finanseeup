@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 
+import 'consts/sizes.dart';
+
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
+
 
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.teal,
         brightness: Brightness.dark
     ),
     fontFamily: "Poppins",
-    textTheme: const TextTheme(
+    textTheme:  TextTheme(
+      bodySmall:TextStyle(
+        fontSize: AppSizes.fontSizeXs,
+        color: Colors.grey.shade400
+      ),
       titleMedium: TextStyle(
         fontWeight: FontWeight.w700,
       ),
@@ -36,7 +43,11 @@ class AppTheme {
       primarySwatch: Colors.teal,
         brightness: Brightness.light
     ),
-    textTheme: const TextTheme(
+    textTheme:  TextTheme(
+      bodySmall:TextStyle(
+        fontSize: AppSizes.fontSizeXs,
+          color: Colors.grey.shade400
+      ),
       headlineMedium: TextStyle(
         fontWeight: FontWeight.w900,
       ),

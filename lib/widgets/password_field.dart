@@ -6,13 +6,13 @@ class PasswordField extends StatefulWidget {
     required this.controller,
     required this.labelText,
     this.hintText,
-    this.validator,
+    this.validator, // Make the validator optional
   }) : super(key: key);
 
   final TextEditingController controller;
   final String labelText;
   final String? hintText;
-  final String? validator;
+  final String? Function(String?)? validator; // Nullable validator
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
@@ -28,6 +28,8 @@ class _PasswordFieldState extends State<PasswordField> {
       decoration: InputDecoration(
         labelText: widget.labelText,
         hintText: widget.hintText,
+        hintStyle:  Theme.of(context).textTheme.bodySmall, // Adjust the font size as needed
+
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.grey),
         ),
@@ -44,11 +46,9 @@ class _PasswordFieldState extends State<PasswordField> {
             });
           },
         ),
-
       ),
       obscureText: _obscureText,
-
+      validator: widget.validator, // Apply the validator if provided
     );
   }
 }
-

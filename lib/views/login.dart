@@ -1,8 +1,8 @@
 import 'package:finanseeup/widgets/google_sign_in_button.dart';
 import 'package:finanseeup/widgets/login_Form.dart';
 import 'package:flutter/material.dart';
-import 'package:finanseeup/consts/image_strings.dart';
-import 'package:finanseeup/consts/text_strings.dart';
+import 'package:finanseeup/utils/consts/image_strings.dart';
+import 'package:finanseeup/utils/consts/text_strings.dart';
 import 'package:finanseeup/views/sign_up.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -12,48 +12,14 @@ import '../controllers/signup_controller.dart';
 import '../models/login_model.dart';
 
 class LoginView extends StatefulWidget {
-   LoginView({Key? key,required this.model}) : super(key: key);
+   const LoginView({super.key});
 
-  final LoginModel model;
+  // final LoginModel model;
   @override
   State<LoginView> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
-  final emailController = TextEditingController();
-
-  final passwordController = TextEditingController();
-
-  void showErrorMessage(String message) {
-    // Tampilkan dialog dengan pesan error
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(message),
-          );
-        });
-  }
-
-  String _errorMessage = "";
-
-  void validateEmail(String val) {
-    if (val.isEmpty) {
-      // Validasi jika email kosong
-      setState(() {
-        _errorMessage = "Email tidak boleh kosong";
-      });
-    } else if (!EmailValidator.validate(val, true)) {
-      // Validasi jika email tidak valid
-      setState(() {
-        _errorMessage = "Alamat Email tidak valid";
-      });
-    } else {
-      setState(() {
-        _errorMessage = "";
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +34,15 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   Image(
                     height: 150,
-                    image: AssetImage(ImageAssets.logo),
+                    image: AssetImage(AppImages.logo),
                   ),
                   const SizedBox(height: 30.0),
                   Text(
-                    TextStrings.signinTitle,
+                    AppTexts.signinTitle,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 15.0),
-                  Text(TextStrings.signinBody,
+                  Text(AppTexts.signinBody,
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.bodySmall),
                 ],
@@ -89,14 +55,14 @@ class _LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    TextStrings.noAccount,
+                    AppTexts.noAccount,
                     style: Theme.of(context).textTheme.bodySmall,
                     softWrap: true,
                   ),
                   TextButton(
-                    onPressed: () => Get.to(() => SignUpController().getView()),
+                    onPressed: () => Get.offAll(() =>  SignUpView()),
                     child: const Text(
-                      TextStrings.signUp,
+                      AppTexts.signUp,
                       style: TextStyle(fontSize: 12),
                     ),
                   ),
@@ -110,7 +76,7 @@ class _LoginViewState extends State<LoginView> {
               SizedBox(
                 height: 10,
               ),
-              Container(width: double.infinity,child: GoogleSignInButton(onPressed: () => {},text: TextStrings.signinWithGoogle,)),
+              Container(width: double.infinity,child: GoogleSignInButton(onPressed: () => {},text: AppTexts.signinWithGoogle,)),
             ],
           ),
         ),

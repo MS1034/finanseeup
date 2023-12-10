@@ -9,10 +9,11 @@ class OnBoardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).scaffoldBackgroundColor;
 
     return Container(
       padding: const EdgeInsets.all(30.0),
-      color: model.bgColor,
+      color: color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

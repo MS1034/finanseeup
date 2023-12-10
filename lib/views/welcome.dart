@@ -1,13 +1,14 @@
-import 'package:finanseeup/controllers/login_controller.dart';
+import 'package:finanseeup/controllers/signin_controller.dart';
 import 'package:finanseeup/models/on_boarding_model.dart';
 import 'package:finanseeup/views/on_boarding.dart';
 import 'package:finanseeup/views/sign_up.dart';
 import 'package:finanseeup/widgets/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-import '../consts/image_strings.dart';
-import '../consts/text_strings.dart';
+import '../utils/consts/image_strings.dart';
+import '../utils/consts/text_strings.dart';
 import '../controllers/signup_controller.dart';
 import 'login.dart';
 
@@ -19,12 +20,13 @@ class Welcome extends StatelessWidget {
     print(Theme.of(context));
     final size = MediaQuery.of(context).size;
     final color = Theme.of(context).colorScheme.background;
+    final deviceStorage = GetStorage();
+
     final OnBoardingModel model = OnBoardingModel(
-        image: ImageAssets.welcome,
-        title: TextStrings.welcomeTitle,
-        subTitle: TextStrings.welcomeSubTitle,
-        bgColor: color,
-        height: 0.45 * size.height);
+      image: AppImages.welcome,
+      title: AppTexts.welcomeTitle,
+      subTitle: AppTexts.welcomeSubTitle,
+    );
     return Scaffold(
         body: Container(
       padding: EdgeInsets.all(30.0),
@@ -47,8 +49,17 @@ class Welcome extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               OutlinedButton(
-                  onPressed: () => {Get.to( SignInController().getView())}, child: Text("Log In")),
-              ElevatedButton(onPressed: () => Get.to(() => SignUpController().getView()), child: Text("Sign Up"))
+                  onPressed: () {
+                    deviceStorage.write("IsFirstTime", false);
+                    Get.to(() => LoginView());
+                  },
+                  child: Text("Log In")),
+              ElevatedButton(
+                  onPressed: () {
+                    deviceStorage.write("IsFirstTime", false);
+                    Get.to(() => SignUpView());
+                  },
+                  child: Text("Sign Up"))
             ],
           )
         ],

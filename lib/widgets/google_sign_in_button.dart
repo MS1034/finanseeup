@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:finanseeup/consts/image_strings.dart';
-import 'package:finanseeup/consts/text_strings.dart';
+import 'package:finanseeup/utils/consts/image_strings.dart';
+import 'package:finanseeup/utils/consts/text_strings.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -20,7 +20,7 @@ class GoogleSignInButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
 
         children: [
-          Image.asset(ImageAssets.googleLogo,height: 24.0),
+          Image.asset(AppImages.googleLogo,height: 24.0),
           SizedBox(width: 10.0),
           Text(text),
         ],
