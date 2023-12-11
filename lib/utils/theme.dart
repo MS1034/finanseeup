@@ -1,44 +1,62 @@
 import 'package:flutter/material.dart';
 
-class TAppTheme {
-  static ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: const MaterialColor(
-      0xFF2196F3, // Primary color
-      <int, Color>{
-        50: Color(0xFFE3F2FD),
-        100: Color(0xFFBBDEFB),
-        200: Color(0xFF90CAF9),
-        300: Color(0xFF64B5F6),
-        400: Color(0xFF42A5F5),
-        500: Color(0xFF2196F3),
-        600: Color(0xFF1E88E5),
-        700: Color(0xFF1976D2),
-        800: Color(0xFF1565C0),
-        900: Color(0xFF0D47A1),
-      },
+import 'consts/sizes.dart';
+
+class AppTheme {
+  static ThemeData darkTheme = ThemeData(
+
+
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: Colors.teal,
+        brightness: Brightness.dark
     ),
     fontFamily: "Poppins",
+    textTheme:  TextTheme(
+      bodySmall:TextStyle(
+        fontSize: AppSizes.fontSizeXs,
+        color: Colors.grey.shade400
+      ),
+      titleMedium: TextStyle(
+        fontWeight: FontWeight.w700,
+      ),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
+    ),
+    // textTheme: const TextTheme(
+    //   titleMedium: TextStyle(fontWeight: FontWeight.w900),
+    // ),
   );
 
-  static ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    primarySwatch: Colors.cyan,
-    // primarySwatch: const MaterialColor(
-    //   0xFF2196F3, // Primary color for dark mode
-    //   <int, Color>{
-    //     50: Color(0xFFE3F2FD),
-    //     100: Color(0xFFBBDEFB),
-    //     200: Color(0xFF90CAF9),
-    //     300: Color(0xFF64B5F6),
-    //     400: Color(0xFF42A5F5),
-    //     500: Color(0xFF2196F3),
-    //     600: Color(0xFF1E88E5),
-    //     700: Color(0xFF1976D2),
-    //     800: Color(0xFF1565C0),
-    //     900: Color(0xFF0D47A1),
-    //   },
-    // ),
+  static ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primarySwatch: Colors.teal,
+    // primaryColor: Colors.teal,
     fontFamily: "Poppins",
+    scaffoldBackgroundColor: Colors.white,
+
+
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: Colors.teal,
+        brightness: Brightness.light
+    ),
+    textTheme:  TextTheme(
+      bodySmall:TextStyle(
+        fontSize: AppSizes.fontSizeXs,
+          color: Colors.grey.shade400
+      ),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
+      titleMedium: TextStyle(
+        fontWeight: FontWeight.w700,
+      ),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
+    ),
   );
 }
