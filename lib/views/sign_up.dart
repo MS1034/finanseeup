@@ -13,59 +13,57 @@ import '../widgets/login_Form.dart';
 class SignUpView extends StatelessWidget {
   SignUpView({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(top: 60, left: 15, right: 15, bottom: 15),
-            child: Column(
-              children: [
-                Text(
-                  AppTexts.signupBody,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SignupForm(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      AppTexts.haveAccount,
-                      style: Theme.of(context).textTheme.bodySmall,
-                      softWrap: true,
+          child: Column(
+            children: [
+              Text(
+                AppTexts.signupBody,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              SignupForm(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    AppTexts.haveAccount,
+                    style: Theme.of(context).textTheme.bodySmall,
+                    softWrap: true,
+                  ),
+                  TextButton(
+                    onPressed: () => {Get.offAll(const LoginView())},
+                    child: const Text(
+                      AppTexts.signIn,
+                      style: TextStyle(fontSize: 12),
                     ),
-                    TextButton(
-                      onPressed: () => {Get.offAll(LoginView())},
-                      child: const Text(
-                        AppTexts.signIn,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  "OR",
-                  style: Theme.of(context).textTheme.bodySmall,
-                  softWrap: true,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                    width: double.infinity,
-                    child: GoogleSignInButton(
-                      onPressed: () => {},
-                      text: AppTexts.signupWithGoogle,
-                    )),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              Text(
+                "OR",
+                style: Theme.of(context).textTheme.bodySmall,
+                softWrap: true,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                  width: double.infinity,
+                  child: GoogleSignInButton(
+                    onPressed: () => {},
+                    text: AppTexts.signupWithGoogle,
+                  )),
+            ],
           ),
         ),
+      ),
     );
   }
 }

@@ -88,7 +88,7 @@ class SignUpController extends GetxController {
           title: 'Congratulations',
           message: 'Your account has been created!');
 
-      Get.offAll(const VerifyEmailView());
+      Get.offAll( VerifyEmailView(email: _emailController.text.trim(),));
     }
 
     catch (e) {

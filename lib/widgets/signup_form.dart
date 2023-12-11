@@ -45,32 +45,29 @@ class SignupForm extends StatelessWidget {
                       keyboardType: TextInputType.name,
                     ),
                   ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      validator: (value) =>
-                          AppValidations.validateEmptyText(value),
-                      controller: controller.lastNameController,
-                      decoration: InputDecoration(
-                        labelText: AppTexts.labelLastName,
-                        hintText: AppTexts.hintLastName,
-
-                        enabledBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0,
-                        ),
-                        hintStyle: Theme.of(context).textTheme.bodySmall,
-                        // Adjust the font size as needed
-                        prefixIcon: const Icon(Icons.person),
-                      ),
-                      keyboardType: TextInputType.name,
-                    ),
-                  ),
                 ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                validator: (value) => AppValidations.validateEmptyText(value),
+                controller: controller.lastNameController,
+                decoration: InputDecoration(
+                  labelText: AppTexts.labelLastName,
+                  hintText: AppTexts.hintLastName,
+
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 0,
+                  ),
+                  hintStyle: Theme.of(context).textTheme.bodySmall,
+                  // Adjust the font size as needed
+                  prefixIcon: const Icon(Icons.person),
+                ),
+                keyboardType: TextInputType.name,
               ),
               const SizedBox(height: 15.0),
               Row(

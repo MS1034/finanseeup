@@ -17,7 +17,12 @@ class InternetException extends AppExceptions
 
 class AppFirebaseAuthException extends AppExceptions
 {
-  AppFirebaseAuthException([String?message]):super([message,'Firebase Error']);
+  AppFirebaseAuthException([String?message]):super([message,'Firebase Auth Error']);
+
+}
+class AppFirebaseException extends AppExceptions
+{
+  AppFirebaseException([String?message]):super([message,'Firebase Error']);
 
 }
 

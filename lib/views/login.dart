@@ -60,7 +60,7 @@ class _LoginViewState extends State<LoginView> {
                     softWrap: true,
                   ),
                   TextButton(
-                    onPressed: () => Get.offAll(() =>  SignUpView()),
+                    onPressed: () => Get.to(() =>  SignUpView()),
                     child: const Text(
                       AppTexts.signUp,
                       style: TextStyle(fontSize: 12),

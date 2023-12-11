@@ -3,14 +3,18 @@ import 'package:finanseeup/views/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
+import '../data/repositories/authentication_repository.dart';
 import '../utils/consts/image_strings.dart';
 import '../utils/consts/sizes.dart';
 import '../utils/consts/text_strings.dart';
 import '../utils/helpers/colors.dart';
 
+typedef ScreenRedirectFunction = Future<dynamic> Function();
 class AccountSuccess extends StatelessWidget {
   const AccountSuccess({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,12 @@ class AccountSuccess extends StatelessWidget {
           child: Column(
             children: [
               /// Image
+              ///
+              // Lottie.asset(
+              //   AppImages.verifiedAnimation,
+              //   width: MediaQuery.of(context).size.width * 0.3,
+              //   repeat: false
+              // ),
               Image(
                 image: const AssetImage(AppImages.accountCreatedIllustration),
                 width: AppHelperFunctions.screenWidth(),
@@ -46,7 +56,7 @@ class AccountSuccess extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Get.to(() => const LoginView()),
+                  onPressed: (){AuthenticationRepository.instance.screenRedirect();},
                   // Replace YourNextScreen with the actual next screen widget.
                   child: const Text(AppTexts.appContinue),
                 ),

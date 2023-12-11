@@ -1,4 +1,6 @@
 import 'package:finanseeup/Views/login.dart';
+import 'package:finanseeup/controllers/email_verification_controller.dart';
+import 'package:finanseeup/data/repositories/authentication_repository.dart';
 import 'package:finanseeup/views/account_success.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,20 +13,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 
 class VerifyEmailView extends StatelessWidget {
-  const VerifyEmailView({super.key});
+  const VerifyEmailView({super.key,this.email});
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(VerifyEmailController());
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginView()),
-              );
+            AuthenticationRepository.instance.logout();
             },
             icon: const Icon(Icons.clear),
           ),
@@ -51,7 +52,7 @@ class VerifyEmailView extends StatelessWidget {
               ),
               const SizedBox(height: AppSizes.spaceBtwItems),
               Text(
-                AppTexts.supportEmail,
+                email?? '',
                 style: Theme.of(context).textTheme.labelLarge,
                 textAlign: TextAlign.center,
               ),
@@ -66,7 +67,7 @@ class VerifyEmailView extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Get.to(() => const AccountSuccess()),
+                  onPressed: () => controller.checkEmailVerificationStatus(),
                   child: const Text(AppTexts.appContinue),
                 ),
               ),
@@ -75,7 +76,7 @@ class VerifyEmailView extends StatelessWidget {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () {
-                    // Handle button press
+                    controller.sendVerificationEmail();
                   },
                   child: const Text(AppTexts.resendEmail),
                 ),
