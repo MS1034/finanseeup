@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget
+
+class HomeView extends StatefulWidget
 {
-  const HomePage({super.key, required this.title});
+  const HomeView({super.key, required this.title});
   final title;
   @override
-  State<HomePage> createState() => _ForgetPasswordPageState();
+  State<HomeView> createState() => _ForgetPasswordPageState();
 }
 
-class _ForgetPasswordPageState extends State<HomePage>
+class _ForgetPasswordPageState extends State<HomeView>
 {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 1,
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Home'),

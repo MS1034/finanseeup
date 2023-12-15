@@ -48,6 +48,7 @@ class _PasswordFieldState extends State<PasswordField> {
         ),
       ),
       obscureText: _obscureText,
+      // keyboardType: TextInputType.visiblePassword,
       validator: widget.validator, // Apply the validator if provided
     );
   }

@@ -7,16 +7,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../data/repositories/authentication_repository.dart';
 import '../utils/consts/image_strings.dart';
 import '../utils/consts/text_strings.dart';
 import '../controllers/signup_controller.dart';
-import 'login.dart';
+import 'sign_in.dart';
 
-class Welcome extends StatelessWidget {
+class Welcome extends StatefulWidget {
   const Welcome({Key? key}) : super(key: key);
 
   @override
+  State<Welcome> createState() => _WelcomeState();
+}
+
+class _WelcomeState extends State<Welcome> {
+  @override
   Widget build(BuildContext context) {
+
     print(Theme.of(context));
     final size = MediaQuery.of(context).size;
     final color = Theme.of(context).colorScheme.background;
@@ -66,4 +73,6 @@ class Welcome extends StatelessWidget {
       ),
     ));
   }
+
+ 
 }

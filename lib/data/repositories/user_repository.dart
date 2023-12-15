@@ -1,6 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:finanseeup/Views/login.dart';
+import 'package:finanseeup/Views/sign_in.dart';
 import 'package:finanseeup/Views/on_boarding.dart';
 import 'package:finanseeup/controllers/signin_controller.dart';
 import 'package:finanseeup/models/user_model.dart';

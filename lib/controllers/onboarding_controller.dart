@@ -9,7 +9,7 @@ import 'package:liquid_swipe/PageHelpers/LiquidController.dart';
 import '../utils/consts/image_strings.dart';
 import '../utils/consts/text_strings.dart';
 import '../models/on_boarding_model.dart';
-import '../views/login.dart';
+import '../views/sign_in.dart';
 import '../views/welcome.dart';
 import '../widgets/on_boarding_page.dart';
 
