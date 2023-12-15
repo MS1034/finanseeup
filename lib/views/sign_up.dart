@@ -1,14 +1,10 @@
-import 'package:finanseeup/controllers/signup_controller.dart';
-import 'package:finanseeup/views/login.dart';
+import 'package:finanseeup/views/sign_in.dart';
 import 'package:finanseeup/widgets/signup_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../utils/consts/text_strings.dart';
-import '../controllers/signin_controller.dart';
-import '../models/user_model.dart';
 import '../widgets/google_sign_in_button.dart';
-import '../widgets/login_Form.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({super.key});
@@ -56,8 +52,7 @@ class SignUpView extends StatelessWidget {
               ),
               Container(
                   width: double.infinity,
-                  child: GoogleSignInButton(
-                    onPressed: () => {},
+                  child: const GoogleSignInButton(
                     text: AppTexts.signupWithGoogle,
                   )),
             ],

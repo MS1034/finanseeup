@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 class OnBoardingModel {
   final String image;

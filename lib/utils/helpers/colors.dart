@@ -9,14 +9,14 @@ import '../theme.dart';
 
 class AppHelperFunctions {
   static Color bgColor() {
-    return SchedulerBinding.instance!.platformDispatcher.platformBrightness ==
+    return SchedulerBinding.instance.platformDispatcher.platformBrightness ==
         Brightness.dark
         ? AppTheme.darkTheme.colorScheme.background
         : AppTheme.lightTheme.colorScheme.background;
 
   }
   static Color textColor() {
-    return SchedulerBinding.instance!.platformDispatcher.platformBrightness ==
+    return SchedulerBinding.instance.platformDispatcher.platformBrightness ==
         Brightness.dark
         ? AppTheme.lightTheme.colorScheme.background
         : AppTheme.darkTheme.colorScheme.background;

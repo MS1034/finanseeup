@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceStorage = GetStorage();
 
     return GetMaterialApp(
       title: 'Finansee Up',

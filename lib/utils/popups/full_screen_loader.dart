@@ -1,7 +1,5 @@
 import 'package:finanseeup/utils/helpers/colors.dart';
-import 'package:finanseeup/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 

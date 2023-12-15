@@ -1,7 +1,5 @@
-import 'package:finanseeup/Views/sign_in.dart';
 import 'package:finanseeup/controllers/email_verification_controller.dart';
 import 'package:finanseeup/data/repositories/authentication_repository.dart';
-import 'package:finanseeup/views/account_success.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:finanseeup/utils/consts/image_strings.dart';
-import 'package:finanseeup/utils/consts/text_strings.dart';
 import 'package:finanseeup/views/account_success.dart';
 import 'package:finanseeup/widgets/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';

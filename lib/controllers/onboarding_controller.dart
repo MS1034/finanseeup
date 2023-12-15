@@ -1,5 +1,3 @@
-import 'package:finanseeup/Views/on_boarding.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -9,7 +7,6 @@ import 'package:liquid_swipe/PageHelpers/LiquidController.dart';
 import '../utils/consts/image_strings.dart';
 import '../utils/consts/text_strings.dart';
 import '../models/on_boarding_model.dart';
-import '../views/sign_in.dart';
 import '../views/welcome.dart';
 import '../widgets/on_boarding_page.dart';
 

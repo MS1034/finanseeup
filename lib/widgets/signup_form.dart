@@ -119,10 +119,10 @@ class SignupForm extends StatelessWidget {
                     children: [
                       Obx(
                         () => Checkbox(
-                          value: controller.privacypolicy.value,
+                          value: controller.privacyPolicy.value,
                           onChanged: (value) {
-                            controller.privacypolicy.value =
-                                !controller.privacypolicy.value;
+                            controller.privacyPolicy.value =
+                                !controller.privacyPolicy.value;
                           },
                         ),
                       ),

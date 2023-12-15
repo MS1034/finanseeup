@@ -3,14 +3,11 @@ import 'package:finanseeup/data/repositories/user_repository.dart';
 import 'package:finanseeup/models/user_model.dart';
 import 'package:finanseeup/utils/consts/image_strings.dart';
 
-// import 'package:finanseeup/utils/network%20manager/network_manager.dart';
-import 'package:finanseeup/utils/popups/full_screen_loader.dart';
+import 'package:finanseeup/utils/popups/full_screen_loader.dart' show AppFullScreenLoader;
 import 'package:finanseeup/views/verify_email.dart';
 import 'package:finanseeup/widgets/loaders.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../utils/network manager/network_manager.dart';
 
@@ -36,7 +33,7 @@ class SignUpController extends GetxController {
   final TextEditingController _reEnterPasswordController =
   TextEditingController();
 
-  final privacypolicy = true.obs;
+  final privacyPolicy = true.obs;
 
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
@@ -59,7 +56,7 @@ class SignUpController extends GetxController {
         return;
       }
 
-      if (!privacypolicy.value) {
+      if (!privacyPolicy.value) {
         AppFullScreenLoader.stoploading();
 
         AppLoaders.warningSnackBar(

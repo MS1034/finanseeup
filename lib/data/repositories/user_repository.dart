@@ -1,15 +1,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:finanseeup/Views/sign_in.dart';
-import 'package:finanseeup/Views/on_boarding.dart';
-import 'package:finanseeup/controllers/signin_controller.dart';
 import 'package:finanseeup/models/user_model.dart';
-import 'package:finanseeup/views/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import '../../exceptions/app_exceptions.dart';
 

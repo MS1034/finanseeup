@@ -1,9 +1,5 @@
-import 'package:finanseeup/Views/sign_in.dart';
-import 'package:finanseeup/views/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 import '../data/repositories/authentication_repository.dart';
 import '../utils/consts/image_strings.dart';

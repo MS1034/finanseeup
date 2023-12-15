@@ -1,16 +1,11 @@
-import 'package:finanseeup/controllers/signin_controller.dart';
 import 'package:finanseeup/models/on_boarding_model.dart';
-import 'package:finanseeup/views/on_boarding.dart';
 import 'package:finanseeup/views/sign_up.dart';
-import 'package:finanseeup/widgets/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../data/repositories/authentication_repository.dart';
 import '../utils/consts/image_strings.dart';
 import '../utils/consts/text_strings.dart';
-import '../controllers/signup_controller.dart';
 import 'sign_in.dart';
 
 class Welcome extends StatefulWidget {
@@ -24,9 +19,6 @@ class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
 
-    print(Theme.of(context));
-    final size = MediaQuery.of(context).size;
-    final color = Theme.of(context).colorScheme.background;
     final deviceStorage = GetStorage();
 
     final OnBoardingModel model = OnBoardingModel(
@@ -74,5 +66,5 @@ class _WelcomeState extends State<Welcome> {
     ));
   }
 
- 
+
 }
