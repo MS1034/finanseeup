@@ -1,4 +1,5 @@
 import 'package:finanseeup/controllers/user_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -29,6 +30,16 @@ class SignInController extends GetxController {
 
   SignInController() {}
 
+  @override
+  void onReady() {
+    if(kDebugMode)
+      {
+        print("hello Subhan");
+        print(storage.read("RememberMeEmail") ?? "No Email");
+        print(storage.read("RememberMePassword") ?? "No Password");
+      }
+  }
+
   Future<void> emailPasswordSign() async {
     try {
       AppFullScreenLoader.openLoadingDialog(
@@ -45,14 +56,15 @@ class SignInController extends GetxController {
         return;
       }
 
-      if (rememberMe.value) {
-        AppFullScreenLoader.stoploading();
-        storage.write("RememberMeEmail", emailController.text.trim());
-        storage.write("RememberMePassword", passwordController.text.trim());
-      }
+
 
       await AuthenticationRepository.instance.loginWithEmailAndPassword(
           _emailController.text.trim(), _passwordController.text.trim());
+
+      if (rememberMe.value) {
+        storage.write("RememberMeEmail", emailController.text.trim());
+        storage.write("RememberMePassword", passwordController.text.trim());
+      }
 
       AppFullScreenLoader.stoploading();
 

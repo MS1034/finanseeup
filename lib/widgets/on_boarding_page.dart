@@ -24,7 +24,7 @@ class OnBoardingPage extends StatelessWidget {
           Column(children: [
             Text(
               model.title,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             Text(model.subTitle,
                 textAlign: TextAlign.center,

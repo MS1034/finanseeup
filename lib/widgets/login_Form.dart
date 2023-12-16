@@ -1,4 +1,5 @@
 import 'package:finanseeup/utils/consts/text_strings.dart';
+import 'package:finanseeup/views/forget_password.dart';
 import 'package:finanseeup/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,7 +45,7 @@ class LogInForm extends StatelessWidget {
                     labelText: AppTexts.passwordLabel,
                     hintText: AppTexts.passwordHint,
                     validator: (value) =>
-                        AppValidations.validatePassword(value),
+                        AppValidations.validateEmptyText(value),
                   )),
                 ],
               ),
@@ -65,7 +66,9 @@ class LogInForm extends StatelessWidget {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(const ForgetPasswordView());
+                  },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(
                         const Size(150, 5)), // Set the minimum size
@@ -81,7 +84,9 @@ class LogInForm extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {controller.emailPasswordSign();},
+                      onPressed: () {
+                        controller.emailPasswordSign();
+                      },
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(

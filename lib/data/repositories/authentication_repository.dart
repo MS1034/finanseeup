@@ -122,8 +122,10 @@ class AuthenticationRepository extends GetxController {
 
   Future<void> logout() async {
     try {
+      await GoogleSignIn().signOut();
+
       await _auth.signOut();
-      Get.to(()=>const LoginView());
+      Get.offAll(()=>const LoginView());
     } on FirebaseAuthException catch (e) {
       throw AppFirebaseAuthException(e.message);
     } on FirebaseException catch (e) {
@@ -145,6 +147,23 @@ class AuthenticationRepository extends GetxController {
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
       }
+    } on FirebaseAuthException catch (e) {
+      throw AppFirebaseAuthException(e.message);
+    } on FirebaseException catch (e) {
+      throw AppFirebaseException(e.message);
+    } on FormatException catch (_) {
+      throw AppFormatException();
+    } on PlatformException catch (e) {
+      throw AppPlatformException(e.message);
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  /// Forget Password
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+        await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw AppFirebaseAuthException(e.message);
     } on FirebaseException catch (e) {

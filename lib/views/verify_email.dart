@@ -9,9 +9,9 @@ import '../utils/consts/text_strings.dart';
 import '../utils/helpers/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class VerifyEmailView extends StatelessWidget {
-  const VerifyEmailView({super.key,this.email});
+  const VerifyEmailView({super.key, this.email});
+
   final String? email;
 
   @override
@@ -23,7 +23,7 @@ class VerifyEmailView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-            AuthenticationRepository.instance.logout();
+              AuthenticationRepository.instance.logout();
             },
             icon: const Icon(Icons.clear),
           ),
@@ -35,13 +35,13 @@ class VerifyEmailView extends StatelessWidget {
           child: Column(
             children: [
               /// Image
-               SvgPicture.asset(
-                  AppImages.deliveredEmailIllustration,
-            width: AppHelperFunctions.screenWidth() ,
-
-                ),
-                // image: const AssetImage(AppImages.deliveredEmailIllustration),
+              SvgPicture.asset(
+                AppImages.deliveredEmailIllustration,
+                width: AppHelperFunctions.screenWidth(),
+              ),
+              // image: const AssetImage(AppImages.deliveredEmailIllustration),
               const SizedBox(height: AppSizes.spaceBtwSections),
+
               /// Title & Subtitle
               Text(
                 AppTexts.confirmEmailTitle,
@@ -50,7 +50,7 @@ class VerifyEmailView extends StatelessWidget {
               ),
               const SizedBox(height: AppSizes.spaceBtwItems),
               Text(
-                email?? '',
+                email ?? '',
                 style: Theme.of(context).textTheme.labelLarge,
                 textAlign: TextAlign.center,
               ),
@@ -61,6 +61,7 @@ class VerifyEmailView extends StatelessWidget {
                 textAlign: TextAlign.justify,
               ),
               const SizedBox(height: AppSizes.spaceBtwSections),
+
               /// Buttons
               SizedBox(
                 width: double.infinity,
@@ -72,18 +73,24 @@ class VerifyEmailView extends StatelessWidget {
               const SizedBox(height: AppSizes.spaceBtwItems),
               SizedBox(
                 width: double.infinity,
-                child: TextButton(
-                  onPressed: () {
-                    controller.sendVerificationEmail();
-                  },
-                  child: const Text(AppTexts.resendEmail),
+                child: Obx(
+                  () => TextButton(
+                    onPressed: controller.timer.EnableButton.value
+                        ? () {
+                            controller.sendVerificationEmail();
+                            controller.timer.startTimer();
+                          }
+                        : null,
+                    child: Text(
+                      '${AppTexts.resendEmail}${controller.timer.timerValue > 0 ? " ${controller.timer.timerValue} seconds" : ""}',
+                    ),
+                  ),
                 ),
-              ),
+              )
             ],
           ),
         ),
       ),
     );
   }
-
 }

@@ -38,7 +38,7 @@ class _WelcomeState extends State<Welcome> {
           Column(children: [
             Text(
               model.title,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             Text(model.subTitle,
                 textAlign: TextAlign.center,

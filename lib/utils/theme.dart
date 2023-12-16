@@ -25,7 +25,14 @@ class AppTheme {
       headlineMedium: TextStyle(
         fontWeight: FontWeight.w900,
       ),
+      headlineSmall: TextStyle(
+        fontWeight: FontWeight.w700,
+          fontSize: AppSizes.fontSizeXL
+
+      ),
+
     ),
+
     // textTheme: const TextTheme(
     //   titleMedium: TextStyle(fontWeight: FontWeight.w900),
     // ),
@@ -56,6 +63,11 @@ class AppTheme {
       ),
       titleLarge: TextStyle(
         fontWeight: FontWeight.w900,
+      ),
+      headlineSmall: TextStyle(
+        fontWeight: FontWeight.w900,
+          fontSize: AppSizes.fontSizeXL
+
       ),
     ),
   );

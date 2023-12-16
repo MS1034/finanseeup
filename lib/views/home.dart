@@ -1,3 +1,4 @@
+import 'package:finanseeup/data/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 
 
@@ -31,12 +32,16 @@ class _ForgetPasswordPageState extends State<HomeView>
             ],
           ),
         ),
-        body: const TabBarView(
+        body:  TabBarView(
           children: <Widget>[
             Center(
-              child: Text("It's cloudy here"),
+
+              child: ElevatedButton(onPressed: ()=>{
+                // GetStorage().erase();
+                AuthenticationRepository.instance.logout()
+                }, child: const Text("Logout")),
             ),
-            Center(
+            const Center(
               child: Text("It's rainy here"),
             ),
           ],

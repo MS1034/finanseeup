@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:finanseeup/controllers/timer_controller.dart';
 import 'package:finanseeup/views/account_success.dart';
 import 'package:finanseeup/widgets/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import '../data/repositories/authentication_repository.dart';
 
 class VerifyEmailController extends GetxController {
   static VerifyEmailController get instance => Get.find();
+  final  timer = Get.put(TimerController());
 
   /// Send Email Whenever Verify Screen appears & Set Timer for auto redirect.
   @override
@@ -27,9 +29,11 @@ class VerifyEmailController extends GetxController {
       final currentUser = FirebaseAuth.instance.currentUser;
 
       if (currentUser != null && currentUser.emailVerified) {
-        throw Exception("Email slready Verified");
+        throw Exception("Email already Verified");
       }
+
       await AuthenticationRepository.instance.sendEmailVerification();
+      timer.startTimer();
       AppLoaders.successSnackBar(
         title: 'Email Verification Sent',
         message: 'Check your email for the verification link.',

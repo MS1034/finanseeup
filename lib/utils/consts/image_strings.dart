@@ -17,5 +17,6 @@ class AppImages
   static const deliveredEmailIllustration = "assets/images/verifyEmail.svg";
   static const accountCreatedIllustration = "assets/images/Confirmed-bro.png";
   static const verifiedAnimation = "assets/images/Confirmed-bro.json";
+  static const resetPassword = "assets/images/Sent-Message-bro.png";
 }
 
