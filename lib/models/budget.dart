@@ -3,14 +3,14 @@ import 'account.dart';
 import 'enum_period.dart';
 import 'label.dart';
 
-part 'budget_model.g.dart';
+part 'budget.g.dart';
 
 @JsonSerializable()
 class BudgetModel {
 
   @JsonKey(includeIfNull: false)
 
-  late String? id;
+  final String? id;
 
   final String name;
   final Period period;
@@ -28,9 +28,9 @@ class BudgetModel {
     required this.amount,
     required this.currency,
     required this.categories,
-    this.id,
     this.accounts,
     this.labels,
+    this.id
   });
 
   factory BudgetModel.fromJson(Map<String, dynamic> json) =>

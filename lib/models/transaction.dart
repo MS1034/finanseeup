@@ -4,7 +4,7 @@ import 'enum_payment_type.dart';
 import 'enum_transaction_type.dart';
 import 'label.dart';
 
-part 'transaction_model.g.dart';
+part 'transaction.g.dart';
 
 @JsonSerializable()
 class TransactionModel {

@@ -15,7 +15,7 @@ class Account {
   final String currency;
 
   @JsonKey(defaultValue: 0)
-  final double amount;
+  late double amount;
   @override
   @ColorSerializer()
   late Color color;
@@ -24,8 +24,6 @@ class Account {
     required this.accountName,
     required this.type,
     required this.currency,
-    this.amount = 0,
-    this.id,
   });
 
   // Factory method to create an Account object from a JSON map

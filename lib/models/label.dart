@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'json_color_convertor.dart';
 
-part 'label_model.g.dart';
+part 'label.g.dart';
 
 @JsonSerializable()
 class LabelModel {

@@ -11,10 +11,9 @@ Goal _$GoalFromJson(Map<String, dynamic> json) => Goal(
       amount: (json['amount'] as num).toDouble(),
       moneySaved: (json['moneySaved'] as num).toDouble(),
       desiredDate: DateTime.parse(json['desiredDate'] as String),
-      color: const ColorSerializer().fromJson(json['color'] as int),
       note: json['note'] as String?,
       id: json['id'] as String?,
-    );
+    )..color = const ColorSerializer().fromJson(json['color'] as int);
 
 Map<String, dynamic> _$GoalToJson(Goal instance) {
   final val = <String, dynamic>{};

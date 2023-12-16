@@ -10,9 +10,10 @@ Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       accountName: json['accountName'] as String,
       type: $enumDecode(_$AccountTypeEnumMap, json['type']),
       currency: json['currency'] as String,
-      amount: (json['amount'] as num?)?.toDouble() ?? 0,
-      id: json['id'] as String?,
-    )..color = const ColorSerializer().fromJson(json['color'] as int);
+    )
+      ..id = json['id'] as String?
+      ..amount = (json['amount'] as num?)?.toDouble() ?? 0
+      ..color = const ColorSerializer().fromJson(json['color'] as int);
 
 Map<String, dynamic> _$AccountToJson(Account instance) {
   final val = <String, dynamic>{};

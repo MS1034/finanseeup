@@ -18,7 +18,7 @@ class Goal {
   final DateTime desiredDate;
   @override
   @ColorSerializer()
-  final Color color;
+  late Color color;
 
   @JsonKey(includeIfNull: false)
   late String? note;
@@ -28,9 +28,9 @@ class Goal {
     required this.amount,
     required this.moneySaved,
     required this.desiredDate,
-    this.color,
     this.note,
-    this.id
+    this.id,
+
   });
 
   factory Goal.fromJson(Map<String, dynamic> json) => _$GoalFromJson(json);
