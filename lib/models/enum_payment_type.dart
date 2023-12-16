@@ -1,0 +1,1 @@
+enum PaymentType { Cash, CreditCard, DebitCard, OnlinePayment }

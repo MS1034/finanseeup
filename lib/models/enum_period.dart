@@ -1,0 +1,1 @@
+enum Period { Week, Month, Year, Quarter }
