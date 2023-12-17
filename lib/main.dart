@@ -2,6 +2,7 @@ import 'package:finanseeup/bindings/general_bindings.dart';
 import 'package:finanseeup/firebase_options.dart';
 import 'package:finanseeup/utils/theme.dart';
 import 'package:finanseeup/routes.dart';
+import 'package:finanseeup/views/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'Finansee Up',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+      // home: const HomeView(title: "Home",),
       getPages: [
         GetPage(
             name: '/',

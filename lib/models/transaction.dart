@@ -1,3 +1,5 @@
+import 'package:finanseeup/models/model_category.dart';
+
 import 'account.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'enum_payment_type.dart';
@@ -8,27 +10,34 @@ part 'transaction.g.dart';
 
 @JsonSerializable()
 class TransactionModel {
-  late String? id;
 
-  final Account account;
+  @JsonKey(includeIfNull: false)
+  final String? id;
+
+  final String accountId;
   final String category;
   final double amount;
   @JsonKey(includeIfNull: false)
   final String? description;
   @JsonKey(includeIfNull: false)
-  final List<LabelModel>? labels;
+  final List<String>? labels;
   @JsonKey(includeIfNull: false)
   final String? payee;
   @JsonKey(includeIfNull: false)
   final DateTime? dateTime;
-  final PaymentType paymentType;
+
   @JsonKey(includeIfNull: false)
-  final String? receiptImage;
+
+  final String? paymentType;
   @JsonKey(includeIfNull: false)
-  final TransactionType? transactionType;
+  late  String? receiptImage;
+  @JsonKey(includeIfNull: false)
+  final String? transactionType;
+
+
 
   TransactionModel({
-    required this.account,
+    required this.accountId,
     required this.category,
     required this.amount,
     required this.paymentType,
@@ -36,8 +45,9 @@ class TransactionModel {
     this.labels,
     this.payee,
     this.dateTime,
-    this.receiptImage,
     this.transactionType,
+    this.id
+
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>

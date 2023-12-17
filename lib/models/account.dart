@@ -8,23 +8,25 @@ part 'account.g.dart';
 @JsonSerializable()
 class Account {
   @JsonKey(includeIfNull: false)
-  late String? id;
+  String? id;
 
-  final String accountName;
-  final AccountType type;
-  final String currency;
+  final String? accountName;
+  final AccountType? type;
+  final String? currency;
 
   @JsonKey(defaultValue: 0)
-  late double amount;
+  double? amount;
   @override
   @ColorSerializer()
-  late Color color;
+  Color? color;
 
-  Account({
-    required this.accountName,
-    required this.type,
-    required this.currency,
-  });
+  Account(
+      {required this.accountName,
+      required this.type,
+      required this.currency,
+      this.color,
+      this.id,
+      this.amount});
 
   // Factory method to create an Account object from a JSON map
   factory Account.fromJson(Map<String, dynamic> json) =>
@@ -40,4 +42,22 @@ class Account {
   static int? _colorToJson(Color? color) {
     return color?.value;
   }
+
+  @override
+  String toString() {
+    return 'Account{id: $id, accountName: $accountName, type: $type, currency: $currency, amount: $amount, color: $color}';
+  }
+
+// Override the == operator
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Account &&
+          runtimeType == other.runtimeType &&
+          accountName == other.accountName &&
+         type == other.type;
+
+  // Override hashCode if you override ==
+  @override
+  int get hashCode => id.hashCode;
 }

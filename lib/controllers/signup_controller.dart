@@ -51,6 +51,7 @@ class SignUpController extends GetxController {
 
         return;
       }
+
       if (!signupFormKey.currentState!.validate()) {
         AppFullScreenLoader.stoploading();
         return;

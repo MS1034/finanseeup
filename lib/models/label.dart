@@ -9,15 +9,15 @@ part 'label.g.dart';
 class LabelModel {
   late String? id;
   final String name;
-  final String type;
+
   @override
   @ColorSerializer()
   late Color? color;
 
   LabelModel({
     required this.name,
-    required this.type,
     this.color,
+    this.id
   });
 
   factory LabelModel.fromJson(Map<String, dynamic> json) =>

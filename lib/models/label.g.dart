@@ -8,16 +8,15 @@ part of 'label.dart';
 
 LabelModel _$LabelModelFromJson(Map<String, dynamic> json) => LabelModel(
       name: json['name'] as String,
-      type: json['type'] as String,
       color: _$JsonConverterFromJson<int, Color>(
           json['color'], const ColorSerializer().fromJson),
-    )..id = json['id'] as String?;
+      id: json['id'] as String?,
+    );
 
 Map<String, dynamic> _$LabelModelToJson(LabelModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'type': instance.type,
       'color': _$JsonConverterToJson<int, Color>(
           instance.color, const ColorSerializer().toJson),
     };

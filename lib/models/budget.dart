@@ -6,7 +6,7 @@ import 'label.dart';
 part 'budget.g.dart';
 
 @JsonSerializable()
-class BudgetModel {
+class Budget {
 
   @JsonKey(includeIfNull: false)
 
@@ -22,7 +22,7 @@ class BudgetModel {
   @JsonKey(includeIfNull: false)
   final List<LabelModel>? labels;
 
-  BudgetModel({
+  Budget({
     required this.name,
     required this.period,
     required this.amount,
@@ -33,8 +33,8 @@ class BudgetModel {
     this.id
   });
 
-  factory BudgetModel.fromJson(Map<String, dynamic> json) =>
-      _$BudgetModelFromJson(json);
+  factory Budget.fromJson(Map<String, dynamic> json) =>
+      _$BudgetFromJson(json);
 
-  Map<String, dynamic> toJson() => _$BudgetModelToJson(this);
+  Map<String, dynamic> toJson() => _$BudgetToJson(this);
 }

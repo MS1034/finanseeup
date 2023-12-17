@@ -8,30 +8,23 @@ part of 'transaction.dart';
 
 TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     TransactionModel(
-      account: Account.fromJson(json['account'] as Map<String, dynamic>),
+      accountId: json['accountId'] as String,
       category: json['category'] as String,
       amount: (json['amount'] as num).toDouble(),
-      paymentType: $enumDecode(_$PaymentTypeEnumMap, json['paymentType']),
+      paymentType: json['paymentType'] as String?,
       description: json['description'] as String?,
-      labels: (json['labels'] as List<dynamic>?)
-          ?.map((e) => LabelModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      labels:
+          (json['labels'] as List<dynamic>?)?.map((e) => e as String).toList(),
       payee: json['payee'] as String?,
       dateTime: json['dateTime'] == null
           ? null
           : DateTime.parse(json['dateTime'] as String),
-      receiptImage: json['receiptImage'] as String?,
-      transactionType: $enumDecodeNullable(
-          _$TransactionTypeEnumMap, json['transactionType']),
-    )..id = json['id'] as String?;
+      transactionType: json['transactionType'] as String?,
+      id: json['id'] as String?,
+    )..receiptImage = json['receiptImage'] as String?;
 
 Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'account': instance.account,
-    'category': instance.category,
-    'amount': instance.amount,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -39,26 +32,16 @@ Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) {
     }
   }
 
+  writeNotNull('id', instance.id);
+  val['accountId'] = instance.accountId;
+  val['category'] = instance.category;
+  val['amount'] = instance.amount;
   writeNotNull('description', instance.description);
   writeNotNull('labels', instance.labels);
   writeNotNull('payee', instance.payee);
   writeNotNull('dateTime', instance.dateTime?.toIso8601String());
-  val['paymentType'] = _$PaymentTypeEnumMap[instance.paymentType]!;
+  writeNotNull('paymentType', instance.paymentType);
   writeNotNull('receiptImage', instance.receiptImage);
-  writeNotNull(
-      'transactionType', _$TransactionTypeEnumMap[instance.transactionType]);
+  writeNotNull('transactionType', instance.transactionType);
   return val;
 }
-
-const _$PaymentTypeEnumMap = {
-  PaymentType.Cash: 'Cash',
-  PaymentType.CreditCard: 'CreditCard',
-  PaymentType.DebitCard: 'DebitCard',
-  PaymentType.OnlinePayment: 'OnlinePayment',
-};
-
-const _$TransactionTypeEnumMap = {
-  TransactionType.Income: 'Income',
-  TransactionType.Expense: 'Expense',
-  TransactionType.Transfer: 'Transfer',
-};

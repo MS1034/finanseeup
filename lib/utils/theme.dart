@@ -4,18 +4,12 @@ import 'consts/sizes.dart';
 
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
-
-
     colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: Colors.teal,
-        brightness: Brightness.dark
-    ),
+        primarySwatch: Colors.teal, brightness: Brightness.dark),
     fontFamily: "Poppins",
-    textTheme:  TextTheme(
-      bodySmall:TextStyle(
-        fontSize: AppSizes.fontSizeXs,
-        color: Colors.grey.shade400
-      ),
+    textTheme: TextTheme(
+      bodySmall:
+          TextStyle(fontSize: AppSizes.fontSizeXs, color: Colors.grey.shade400),
       titleMedium: TextStyle(
         fontWeight: FontWeight.w700,
       ),
@@ -25,12 +19,11 @@ class AppTheme {
       headlineMedium: TextStyle(
         fontWeight: FontWeight.w900,
       ),
-      headlineSmall: TextStyle(
-        fontWeight: FontWeight.w700,
-          fontSize: AppSizes.fontSizeXL
-
-      ),
-
+      headlineSmall:
+          TextStyle(fontWeight: FontWeight.w700, fontSize: AppSizes.fontSizeXL),
+    ),
+    buttonTheme: const ButtonThemeData(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     ),
 
     // textTheme: const TextTheme(
@@ -45,16 +38,11 @@ class AppTheme {
     fontFamily: "Poppins",
     scaffoldBackgroundColor: Colors.white,
 
-
     colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: Colors.teal,
-        brightness: Brightness.light
-    ),
-    textTheme:  TextTheme(
-      bodySmall:TextStyle(
-        fontSize: AppSizes.fontSizeXs,
-          color: Colors.grey.shade400
-      ),
+        primarySwatch: Colors.teal, brightness: Brightness.light),
+    textTheme: TextTheme(
+      bodySmall:
+          TextStyle(fontSize: AppSizes.fontSizeXs, color: Colors.grey.shade400),
       headlineMedium: TextStyle(
         fontWeight: FontWeight.w900,
       ),
@@ -64,11 +52,11 @@ class AppTheme {
       titleLarge: TextStyle(
         fontWeight: FontWeight.w900,
       ),
-      headlineSmall: TextStyle(
-        fontWeight: FontWeight.w900,
-          fontSize: AppSizes.fontSizeXL
-
-      ),
+      headlineSmall:
+          TextStyle(fontWeight: FontWeight.w900, fontSize: AppSizes.fontSizeXL),
+    ),
+    buttonTheme: const ButtonThemeData(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     ),
   );
 }

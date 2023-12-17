@@ -15,6 +15,13 @@ class AppHelperFunctions {
         : AppTheme.lightTheme.colorScheme.background;
 
   }
+  static Color inverseBgColor() {
+    return SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+        Brightness.dark
+        ? AppTheme.darkTheme.colorScheme.inversePrimary
+        : AppTheme.lightTheme.colorScheme.inversePrimary;
+
+  }
   static Color textColor() {
     return SchedulerBinding.instance.platformDispatcher.platformBrightness ==
         Brightness.dark

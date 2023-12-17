@@ -6,7 +6,7 @@ part of 'budget.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BudgetModel _$BudgetModelFromJson(Map<String, dynamic> json) => BudgetModel(
+Budget _$BudgetFromJson(Map<String, dynamic> json) => Budget(
       name: json['name'] as String,
       period: $enumDecode(_$PeriodEnumMap, json['period']),
       amount: (json['amount'] as num).toDouble(),
@@ -23,7 +23,7 @@ BudgetModel _$BudgetModelFromJson(Map<String, dynamic> json) => BudgetModel(
       id: json['id'] as String?,
     );
 
-Map<String, dynamic> _$BudgetModelToJson(BudgetModel instance) {
+Map<String, dynamic> _$BudgetToJson(Budget instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
