@@ -3,55 +3,78 @@ import 'package:finanseeup/utils/helpers/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class Expense {
+class Coordinate {
   DateTime date;
-  double amount;
+  double value;
+  String legend;
 
-  Expense({required this.date, required this.amount});
+  Coordinate({required this.date, required this.value, required this.legend});
 }
 
-class ExpenseBarGraph extends StatelessWidget {
-  final List<Expense> expenses;
+class lineGraph extends StatefulWidget {
+  final List<List<Coordinate>> seriesList;
 
-  const ExpenseBarGraph({Key? key, required this.expenses}) : super(key: key);
+  const lineGraph({Key? key, required this.seriesList}) : super(key: key);
+
+  @override
+  _lineGraphState createState() => _lineGraphState();
+}
+
+class _lineGraphState extends State<lineGraph> {
+  List<List<Coordinate>> _currentSeriesList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentSeriesList = widget.seriesList;
+  }
+
+  void updateSeriesList(List<List<Coordinate>> newSeriesList) {
+    setState(() {
+      _currentSeriesList = newSeriesList;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<charts.Series<Expense, DateTime>> series = [
-      charts.Series(
-        id: 'Expenses',
-        data: expenses,
-        domainFn: (Expense expense, _) => expense.date,
-        measureFn: (Expense expense, _) => expense.amount,
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        displayName: 'Money',
-      ),
-    ];
+    List<charts.Series<Coordinate, DateTime>> series = _currentSeriesList
+        .asMap()
+        .entries
+        .map((entry) => charts.Series(
+              id: 'Series ${entry.key + 1}',
+              data: entry.value,
+              domainFn: (Coordinate coordinate, _) => coordinate.date,
+              measureFn: (Coordinate coordinate, _) => coordinate.value,
+              colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+              // displayNameFn: (Coordinate coordinate, _) => coordinate.legend,
+            ))
+        .toList();
 
     return Card(
       elevation: 4.0,
       child: Container(
-        padding: EdgeInsets.all(AppSizes.md),
+        padding: const EdgeInsets.all(AppSizes.md),
+        height: 300,
+        alignment: Alignment.center,
         decoration: BoxDecoration(color: AppHelperFunctions.bgColor()),
-        child: Column(
+        child: ListView(
           children: [
             Text(
               'Balance Trend',
               style: TextStyle(
                 fontSize: AppSizes.fontSizeLg,
                 fontWeight: FontWeight.bold,
-                color: AppHelperFunctions
-                    .textColor(), // Use your textColor function
+                color: AppHelperFunctions.textColor(),
               ),
             ),
-            SizedBox(height: AppSizes.spaceBtwItems),
-            Container(
-              height: 200.0, // Adjust the height of the chart
+            const SizedBox(height: AppSizes.spaceBtwItems),
+            SizedBox(
+              height: 220.0, // Adjust the height of the chart
               child: charts.TimeSeriesChart(
                 series,
                 animate: true,
                 dateTimeFactory: const charts.LocalDateTimeFactory(),
-                primaryMeasureAxis: charts.NumericAxisSpec(
+                primaryMeasureAxis: const charts.NumericAxisSpec(
                   tickProviderSpec:
                       charts.BasicNumericTickProviderSpec(desiredTickCount: 5),
                 ),
