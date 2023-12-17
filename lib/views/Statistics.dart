@@ -1,67 +1,42 @@
-import 'dart:math';
-import 'package:finanseeup/models/transaction.dart';
+import 'package:finanseeup/controllers/line_graph_controller.dart';
+import 'package:finanseeup/controllers/pie_chart_controller.dart';
+import 'package:finanseeup/controllers/statistics_controller.dart';
 import 'package:finanseeup/widgets/lineBarGraph.dart';
 import 'package:finanseeup/widgets/pieChart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 class Statistics extends StatefulWidget {
-  const Statistics({super.key});
+  const Statistics({Key? key}) : super(key: key);
 
   @override
-  _Statistics_State createState() => _Statistics_State();
+  _StatisticsState createState() => _StatisticsState();
 }
 
-class _Statistics_State extends State<Statistics>
+class _StatisticsState extends State<Statistics>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  String selectedFilter = '7D'; // Default filter
-  DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
-  DateTime endDate = DateTime.now();
-
-  List<TransactionModel> allCoordinates = List.generate(
-    120,
-    (index) => TransactionModel(
-        accountId: ["A", "B", "C"][Random().nextInt(3)],
-        category: ["A", "B", "C", "D", "E", "F"][Random().nextInt(6)],
-        paymentType: "Cash",
-        dateTime: DateTime.now().subtract(Duration(days: Random().nextInt(71))),
-        amount: Random().nextDouble() *
-            1000.0 *
-            ((Random().nextInt(5) == 0) ? -1.0 : 1.0),
-        transactionType: ["Income", "Expense"][Random().nextInt(2)]),
-  );
-
-  List<Coordinate> balanceTrendList = [], incomeList = [], expenseList = [];
-  List<Piece> spendings = [];
+  late StatisticsController _controller;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _controller = StatisticsController(
+      onStateChanged: () {
+        setState(() {});
+      },
+    );
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      filterRecords(selectedFilter);
-    });
+    _controller.initState();
+    _controller.tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    void initState() {
-      super.initState();
-      // Schedule the filterRecords function to be called after the widget is rendered.
-      SchedulerBinding.instance!.addPostFrameCallback((_) {
-        filterRecords(selectedFilter);
-      });
-    }
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -76,7 +51,7 @@ class _Statistics_State extends State<Statistics>
             ),
           ],
           bottom: TabBar(
-            controller: _tabController,
+            controller: _controller.tabController,
             tabs: const [
               Tab(text: 'Balance Trend'),
               Tab(text: 'Cash Flow'),
@@ -85,32 +60,41 @@ class _Statistics_State extends State<Statistics>
           ),
         ),
         body: TabBarView(
-          controller: _tabController,
+          controller: _controller.tabController,
           children: [
             ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
-                lineBarGraph(
-                  Graph: "Balance Trend",
-                  Coordinates: balanceTrendList,
-                ),
+                LineBarGraph(
+                  controller: LineBarGraphController(
+                    graph: "Balance Trend",
+                    currentCoordinates: _controller.balanceTrendList,
+                  ),
+                )
               ],
             ),
             ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
-                lineBarGraph(
-                  Graph: "Cash Flow",
-                  Coordinates: incomeList,
-                  Coordinates2: expenseList,
-                  Legends: const ['Income', 'Expense'],
-                ),
+                LineBarGraph(
+                  controller: LineBarGraphController(
+                    graph: "Cash Flow",
+                    currentCoordinates: _controller.incomeList,
+                    currentCoordinates2: _controller.expenseList,
+                    legends: const ['Income', 'Expense'],
+                  ),
+                )
               ],
             ),
             ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
-                pieChart(Graph: "Expenses Structure", Pieces: spendings),
+                PieChart(
+                  controller: PieChartController(
+                    graph: "Expenses Structure",
+                    currentPieces: _controller.spendings,
+                  ),
+                ),
               ],
             ),
           ],
@@ -162,191 +146,15 @@ class _Statistics_State extends State<Statistics>
     return ElevatedButton(
       onPressed: () {
         setState(() {
-          selectedFilter = filter;
-          filterRecords(selectedFilter);
+          _controller.selectedFilter = filter;
+          _controller.filterRecords(_controller.selectedFilter);
         });
       },
       child: Text(filter),
-      style: selectedFilter == filter
-          ? ElevatedButton.styleFrom(backgroundColor: Colors.blue)
+      style: _controller.selectedFilter == filter
+          ? ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue, foregroundColor: Colors.white)
           : null,
     );
-  }
-
-  Widget _buildDateRangePicker(Function setState) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text('Select Date Range'),
-        ),
-        IconButton(
-          icon: Icon(Icons.calendar_today),
-          onPressed: () async {
-            DateTimeRange? pickedRange = await showDateRangePicker(
-              context: context,
-              initialDateRange: DateTimeRange(start: startDate, end: endDate),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2030),
-            );
-
-            if (pickedRange != null) {
-              setState(() {
-                startDate = pickedRange.start;
-                endDate = pickedRange.end;
-              });
-            }
-          },
-        ),
-      ],
-    );
-  }
-
-  bool isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
-  }
-
-  void filterRecords(String filter) {
-    int range = int.parse(filter.substring(0, filter.length - 1));
-    DateTime startDate = DateTime.now().subtract(Duration(days: range - 1)),
-        endDate = DateTime.now();
-
-    // Initializing with 0 for all days
-    List<Coordinate> AllDays = [];
-    for (DateTime date = startDate;
-        date.isBefore(endDate) || isSameDay(date, endDate);
-        date = date.add(const Duration(days: 1))) {
-      AllDays.add(Coordinate(date: date, amount: 0));
-    }
-
-    updateBalanceTrendGraph(AllDays, startDate, endDate);
-    updateCashFlowGraph(AllDays, startDate, endDate);
-    updateSpendingGraph(startDate, endDate);
-  }
-
-  void updateBalanceTrendGraph(
-      List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
-    //Convert from transaction to coordinate and filtering by use
-    List<Coordinate> allCoordinatesIntoCoordinate = allCoordinates
-        .where((element) => element.transactionType != "Transfer")
-        .map((e) => Coordinate(
-            date: e.dateTime!,
-            amount: e.amount * ((e.transactionType == "Income") ? 1 : -1)))
-        .toList();
-
-    setState(() {
-      balanceTrendList = filterByDateRange(
-          allCoordinatesIntoCoordinate, AllDays, startDate, endDate);
-    });
-
-    List<Coordinate> summedCoordinates =
-        groupSumByDate_Coordinate(balanceTrendList);
-    setState(() {
-      balanceTrendList.clear();
-      balanceTrendList.addAll(summedCoordinates);
-    });
-  }
-
-  void updateCashFlowGraph(
-      List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
-    //Convert from transaction to coordinate and filtering by use
-    List<Coordinate> allCoordinatesIntoCoordinate_Income = allCoordinates
-        .where((element) => element.transactionType == "Income")
-        .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
-        .toList();
-
-    List<Coordinate> allCoordinatesIntoCoordinate_Expense = allCoordinates
-        .where((element) => element.transactionType == "Expense")
-        .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
-        .toList();
-
-    setState(() {
-      incomeList = filterByDateRange(
-          allCoordinatesIntoCoordinate_Income, AllDays, startDate, endDate);
-
-      expenseList = filterByDateRange(
-          allCoordinatesIntoCoordinate_Expense, AllDays, startDate, endDate);
-    });
-
-    List<Coordinate> summedCoordinates_Income =
-        groupSumByDate_Coordinate(incomeList);
-    List<Coordinate> summedCoordinates_Expense =
-        groupSumByDate_Coordinate(expenseList);
-
-    setState(() {
-      incomeList.clear();
-      incomeList.addAll(summedCoordinates_Income);
-
-      expenseList.clear();
-      expenseList.addAll(summedCoordinates_Expense);
-    });
-  }
-
-  void updateSpendingGraph(DateTime startDate, DateTime endDate) {
-    //Convert from transaction to coordinate and filtering by use and range
-    List<Piece> allPiecesIntoCoordinate_Expense = allCoordinates
-        .where((element) => (element.transactionType == "Expense" &&
-            (element.dateTime!.isAfter(startDate) ||
-                isSameDay(element.dateTime!, startDate)) &&
-            (element.dateTime!.isBefore(endDate) ||
-                isSameDay(element.dateTime!, endDate))))
-        .map((e) => Piece(category: e.category, amount: e.amount))
-        .toList();
-
-    List<Piece> summedPieces_Expense =
-        groupSumByDate_Piece(allPiecesIntoCoordinate_Expense);
-
-    setState(() {
-      spendings.clear();
-      spendings.addAll(summedPieces_Expense);
-    });
-  }
-
-  List<Coordinate> groupSumByDate_Coordinate(List<Coordinate> list) {
-    Map<DateTime, double> amountMap = {};
-
-    for (var coordinate in list) {
-      DateTime coordinateDate = DateTime(
-          coordinate.date.year, coordinate.date.month, coordinate.date.day);
-      amountMap[coordinateDate] =
-          (amountMap[coordinateDate] ?? 0) + coordinate.amount;
-    }
-
-    // Now `amountMap` contains the summed amounts for each unique date
-    List<Coordinate> summedCoordinates = amountMap.entries
-        .map((entry) => Coordinate(date: entry.key, amount: entry.value))
-        .toList();
-
-    summedCoordinates.sort((a, b) => a.date.compareTo(b.date));
-    return summedCoordinates;
-  }
-
-  List<Piece> groupSumByDate_Piece(List<Piece> list) {
-    Map<String, double> amountMap = {};
-
-    for (var piece in list) {
-      amountMap[piece.category] =
-          (amountMap[piece.category] ?? 0) + piece.amount;
-    }
-
-    // Now `amountMap` contains the summed amounts for each unique date
-    List<Piece> summedPiece = amountMap.entries
-        .map((entry) => Piece(category: entry.key, amount: entry.value))
-        .toList();
-
-    summedPiece.sort((a, b) => a.category.compareTo(b.category));
-    return summedPiece;
-  }
-
-  List<Coordinate> filterByDateRange(List<Coordinate> list,
-      List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
-    return (list + AllDays)
-        .where((Coordinate) =>
-            (Coordinate.date.isAfter(startDate) ||
-                isSameDay(Coordinate.date, startDate)) &&
-            (Coordinate.date.isBefore(endDate) ||
-                isSameDay(Coordinate.date, endDate)))
-        .toList();
   }
 }

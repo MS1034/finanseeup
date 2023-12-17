@@ -1,61 +1,28 @@
-import 'dart:math';
-
 import 'package:finanseeup/utils/consts/sizes.dart';
 import 'package:finanseeup/utils/helpers/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:finanseeup/models/coordinate.dart';
+import 'package:finanseeup/controllers/line_graph_controller.dart';
 
-class Coordinate {
-  DateTime date;
-  double amount;
+class LineBarGraph extends StatefulWidget {
+  final LineBarGraphController controller;
 
-  Coordinate({required this.date, required this.amount});
-}
-
-class lineBarGraph extends StatefulWidget {
-  final String Graph;
-  final List<Coordinate> Coordinates;
-  final List<Coordinate>? Coordinates2;
-  final List<String>? Legends;
-
-  const lineBarGraph(
-      {super.key,
-      required this.Graph,
-      required this.Coordinates,
-      this.Coordinates2,
-      this.Legends});
+  const LineBarGraph({Key? key, required this.controller}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _lineBarGraphState createState() => _lineBarGraphState();
+  _LineBarGraphState createState() => _LineBarGraphState();
 }
 
-class _lineBarGraphState extends State<lineBarGraph> {
-  List<Coordinate> _currentCoordinates = [], _currentCoordinates2 = [];
-  List<String>? _legends;
-  String _graph = "";
-
+class _LineBarGraphState extends State<LineBarGraph> {
   @override
   void initState() {
     super.initState();
-    _currentCoordinates = widget.Coordinates;
-    if (widget.Coordinates2 != null && widget.Coordinates2!.isNotEmpty) {
-      _currentCoordinates2 = widget.Coordinates2!;
-    }
-    if (widget.Legends != null && widget.Legends!.isNotEmpty) {
-      _legends = widget.Legends;
-    }
-    _graph = widget.Graph;
-  }
-
-  void updatecoordinates(
-      List<Coordinate> newCoordinates, List<Coordinate>? newCoordinates2) {
-    setState(() {
-      _currentCoordinates = newCoordinates;
-      if (widget.Coordinates2 != null && widget.Coordinates2!.isNotEmpty) {
-        _currentCoordinates2 = newCoordinates2!;
-      }
-    });
+    widget.controller.initialize(
+        widget.controller.currentCoordinates,
+        widget.controller.currentCoordinates2,
+        widget.controller.legends,
+        widget.controller.graph);
   }
 
   @override
@@ -63,20 +30,20 @@ class _lineBarGraphState extends State<lineBarGraph> {
     List<charts.Series<Coordinate, DateTime>> series = [
       charts.Series(
         id: 'coordinates',
-        data: widget.Coordinates,
+        data: widget.controller.currentCoordinates,
         domainFn: (Coordinate coordinate, _) => coordinate.date,
         measureFn: (Coordinate coordinate, _) => coordinate.amount,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        displayName: widget.Legends?[0],
+        displayName: widget.controller.legends?[0],
       ),
-      if (widget.Coordinates2 != null && widget.Coordinates2!.isNotEmpty)
+      if (widget.controller.currentCoordinates2.isNotEmpty)
         charts.Series(
           id: 'coordinates1',
-          data: widget.Coordinates2!,
+          data: widget.controller.currentCoordinates2,
           domainFn: (Coordinate coordinate, _) => coordinate.date,
           measureFn: (Coordinate coordinate, _) => coordinate.amount,
           colorFn: (_, __) => charts.MaterialPalette.deepOrange.shadeDefault,
-          displayName: widget.Legends?[1],
+          displayName: widget.controller.legends?[1],
         ),
     ];
 
@@ -90,7 +57,7 @@ class _lineBarGraphState extends State<lineBarGraph> {
         child: ListView(
           children: [
             Text(
-              _graph,
+              widget.controller.graph,
               style: TextStyle(
                 fontSize: AppSizes.fontSizeLg,
                 fontWeight: FontWeight.bold,
@@ -109,7 +76,8 @@ class _lineBarGraphState extends State<lineBarGraph> {
                       charts.BasicNumericTickProviderSpec(desiredTickCount: 5),
                 ),
                 behaviors: [
-                  if (_legends?.length == 2) charts.SeriesLegend(),
+                  if (widget.controller.legends?.length == 2)
+                    charts.SeriesLegend(),
                 ],
                 // Add colored area under the curve
                 defaultRenderer: charts.LineRendererConfig(
