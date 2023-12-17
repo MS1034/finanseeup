@@ -1,10 +1,7 @@
 import 'dart:math';
-import 'package:finanseeup/models/account.dart';
-import 'package:finanseeup/models/enum_account_type.dart';
-import 'package:finanseeup/models/enum_payment_type.dart';
-import 'package:finanseeup/models/enum_transaction_type.dart';
 import 'package:finanseeup/models/transaction.dart';
 import 'package:finanseeup/widgets/lineBarGraph.dart';
+import 'package:finanseeup/widgets/pieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -15,7 +12,10 @@ class Statistics extends StatefulWidget {
   _Statistics_State createState() => _Statistics_State();
 }
 
-class _Statistics_State extends State<Statistics> {
+class _Statistics_State extends State<Statistics>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   String selectedFilter = '7D'; // Default filter
   DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
   DateTime endDate = DateTime.now();
@@ -34,13 +34,22 @@ class _Statistics_State extends State<Statistics> {
   );
 
   List<Coordinate> balanceTrendList = [], incomeList = [], expenseList = [];
+  List<Piece> spendings = [];
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       filterRecords(selectedFilter);
     });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,29 +62,59 @@ class _Statistics_State extends State<Statistics> {
       });
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Statistics'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              _showFilterBottomSheet(context);
-            },
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Statistics'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.filter_list),
+              onPressed: () {
+                _showFilterBottomSheet(context);
+              },
+            ),
+          ],
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: 'Balance Trend'),
+              Tab(text: 'Cash Flow'),
+              Tab(text: 'Spending'),
+            ],
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          lineBarGraph(Graph: "Balance Trend", Coordinates: balanceTrendList),
-          lineBarGraph(
-            Graph: "Cash Flow",
-            Coordinates: incomeList,
-            Coordinates2: expenseList,
-            Legends: const ['Income', 'Expense'],
-          ),
-        ],
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                lineBarGraph(
+                  Graph: "Balance Trend",
+                  Coordinates: balanceTrendList,
+                ),
+              ],
+            ),
+            ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                lineBarGraph(
+                  Graph: "Cash Flow",
+                  Coordinates: incomeList,
+                  Coordinates2: expenseList,
+                  Legends: const ['Income', 'Expense'],
+                ),
+              ],
+            ),
+            ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                pieChart(Graph: "Expenses Structure", Pieces: spendings),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -183,13 +222,17 @@ class _Statistics_State extends State<Statistics> {
 
     updateBalanceTrendGraph(AllDays, startDate, endDate);
     updateCashFlowGraph(AllDays, startDate, endDate);
+    updateSpendingGraph(startDate, endDate);
   }
 
   void updateBalanceTrendGraph(
       List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
     //Convert from transaction to coordinate and filtering by use
     List<Coordinate> allCoordinatesIntoCoordinate = allCoordinates
-        .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
+        .where((element) => element.transactionType != "Transfer")
+        .map((e) => Coordinate(
+            date: e.dateTime!,
+            amount: e.amount * ((e.transactionType == "Income") ? 1 : -1)))
         .toList();
 
     setState(() {
@@ -197,7 +240,8 @@ class _Statistics_State extends State<Statistics> {
           allCoordinatesIntoCoordinate, AllDays, startDate, endDate);
     });
 
-    List<Coordinate> summedCoordinates = GroupSumByDate(balanceTrendList);
+    List<Coordinate> summedCoordinates =
+        groupSumByDate_Coordinate(balanceTrendList);
     setState(() {
       balanceTrendList.clear();
       balanceTrendList.addAll(summedCoordinates);
@@ -208,12 +252,12 @@ class _Statistics_State extends State<Statistics> {
       List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
     //Convert from transaction to coordinate and filtering by use
     List<Coordinate> allCoordinatesIntoCoordinate_Income = allCoordinates
-        .where((element) => element.transactionType == TransactionType.Income)
+        .where((element) => element.transactionType == "Income")
         .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
         .toList();
 
     List<Coordinate> allCoordinatesIntoCoordinate_Expense = allCoordinates
-        .where((element) => element.transactionType == TransactionType.Expense)
+        .where((element) => element.transactionType == "Expense")
         .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
         .toList();
 
@@ -225,8 +269,10 @@ class _Statistics_State extends State<Statistics> {
           allCoordinatesIntoCoordinate_Expense, AllDays, startDate, endDate);
     });
 
-    List<Coordinate> summedCoordinates_Income = GroupSumByDate(incomeList);
-    List<Coordinate> summedCoordinates_Expense = GroupSumByDate(expenseList);
+    List<Coordinate> summedCoordinates_Income =
+        groupSumByDate_Coordinate(incomeList);
+    List<Coordinate> summedCoordinates_Expense =
+        groupSumByDate_Coordinate(expenseList);
 
     setState(() {
       incomeList.clear();
@@ -237,7 +283,27 @@ class _Statistics_State extends State<Statistics> {
     });
   }
 
-  List<Coordinate> GroupSumByDate(List<Coordinate> list) {
+  void updateSpendingGraph(DateTime startDate, DateTime endDate) {
+    //Convert from transaction to coordinate and filtering by use and range
+    List<Piece> allPiecesIntoCoordinate_Expense = allCoordinates
+        .where((element) => (element.transactionType == "Expense" &&
+            (element.dateTime!.isAfter(startDate) ||
+                isSameDay(element.dateTime!, startDate)) &&
+            (element.dateTime!.isBefore(endDate) ||
+                isSameDay(element.dateTime!, endDate))))
+        .map((e) => Piece(category: e.category, amount: e.amount))
+        .toList();
+
+    List<Piece> summedPieces_Expense =
+        groupSumByDate_Piece(allPiecesIntoCoordinate_Expense);
+
+    setState(() {
+      spendings.clear();
+      spendings.addAll(summedPieces_Expense);
+    });
+  }
+
+  List<Coordinate> groupSumByDate_Coordinate(List<Coordinate> list) {
     Map<DateTime, double> amountMap = {};
 
     for (var coordinate in list) {
@@ -254,6 +320,23 @@ class _Statistics_State extends State<Statistics> {
 
     summedCoordinates.sort((a, b) => a.date.compareTo(b.date));
     return summedCoordinates;
+  }
+
+  List<Piece> groupSumByDate_Piece(List<Piece> list) {
+    Map<String, double> amountMap = {};
+
+    for (var piece in list) {
+      amountMap[piece.category] =
+          (amountMap[piece.category] ?? 0) + piece.amount;
+    }
+
+    // Now `amountMap` contains the summed amounts for each unique date
+    List<Piece> summedPiece = amountMap.entries
+        .map((entry) => Piece(category: entry.key, amount: entry.value))
+        .toList();
+
+    summedPiece.sort((a, b) => a.category.compareTo(b.category));
+    return summedPiece;
   }
 
   List<Coordinate> filterByDateRange(List<Coordinate> list,
