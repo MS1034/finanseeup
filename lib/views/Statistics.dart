@@ -1,17 +1,12 @@
 import 'dart:math';
-
-import 'package:finanseeup/widgets/expense.dart';
+import 'package:finanseeup/models/account.dart';
+import 'package:finanseeup/models/enum_account_type.dart';
+import 'package:finanseeup/models/enum_payment_type.dart';
+import 'package:finanseeup/models/enum_transaction_type.dart';
+import 'package:finanseeup/models/transaction.dart';
+import 'package:finanseeup/widgets/lineBarGraph.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/scheduler.dart';
-import 'package:intl/intl.dart';
-
-// class Expense {
-//   final DateTime date;
-//   final double amount;
-
-//   Expense(this.date, this.amount);
-// }
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -25,23 +20,25 @@ class _Statistics_State extends State<Statistics> {
   DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
   DateTime endDate = DateTime.now();
 
-  List<Coordinate> allExpenses = List.generate(
-    50,
-    (index) => Coordinate(
-        date: DateTime.now().subtract(Duration(days: Random().nextInt(31))),
-        value: Random().nextDouble() *
+  List<TransactionModel> allCoordinates = List.generate(
+    120,
+    (index) => TransactionModel(
+        accountId: ["A", "B", "C"][Random().nextInt(3)],
+        category: ["A", "B", "C", "D", "E", "F"][Random().nextInt(6)],
+        paymentType: "Cash",
+        dateTime: DateTime.now().subtract(Duration(days: Random().nextInt(71))),
+        amount: Random().nextDouble() *
             1000.0 *
             ((Random().nextInt(5) == 0) ? -1.0 : 1.0),
-        legend: "Trend"),
+        transactionType: ["Income", "Expense"][Random().nextInt(2)]),
   );
 
-  List<Coordinate> filterPreviewList = [];
+  List<Coordinate> balanceTrendList = [], incomeList = [], expenseList = [];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      // Call filterRecords after the widget is fully rendered
       filterRecords(selectedFilter);
     });
   }
@@ -71,7 +68,13 @@ class _Statistics_State extends State<Statistics> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          lineGraph(seriesList: [filterPreviewList])
+          lineBarGraph(Graph: "Balance Trend", Coordinates: balanceTrendList),
+          lineBarGraph(
+            Graph: "Cash Flow",
+            Coordinates: incomeList,
+            Coordinates2: expenseList,
+            Legends: const ['Income', 'Expense'],
+          ),
         ],
       ),
     );
@@ -159,94 +162,108 @@ class _Statistics_State extends State<Statistics> {
     );
   }
 
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
+
   void filterRecords(String filter) {
     int range = int.parse(filter.substring(0, filter.length - 1));
     DateTime startDate = DateTime.now().subtract(Duration(days: range - 1)),
         endDate = DateTime.now();
-
-    bool isSameDay(DateTime date1, DateTime date2) {
-      return date1.year == date2.year &&
-          date1.month == date2.month &&
-          date1.day == date2.day;
-    }
-
-    bool containsDate(Set<DateTime> dates, DateTime date) {
-      for (var element in dates) {
-        if (isSameDay(element, date)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
 
     // Initializing with 0 for all days
     List<Coordinate> AllDays = [];
     for (DateTime date = startDate;
         date.isBefore(endDate) || isSameDay(date, endDate);
         date = date.add(const Duration(days: 1))) {
-      AllDays.add(Coordinate(date: date, value: 0, legend: ""));
+      AllDays.add(Coordinate(date: date, amount: 0));
     }
 
+    updateBalanceTrendGraph(AllDays, startDate, endDate);
+    updateCashFlowGraph(AllDays, startDate, endDate);
+  }
+
+  void updateBalanceTrendGraph(
+      List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
+    //Convert from transaction to coordinate and filtering by use
+    List<Coordinate> allCoordinatesIntoCoordinate = allCoordinates
+        .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
+        .toList();
+
     setState(() {
-      filterPreviewList = (allExpenses + AllDays)
-          .where((expense) =>
-              (expense.date.isAfter(startDate) ||
-                  isSameDay(expense.date, startDate)) &&
-              (expense.date.isBefore(endDate) ||
-                  isSameDay(expense.date, endDate)))
-          .toList();
+      balanceTrendList = filterByDateRange(
+          allCoordinatesIntoCoordinate, AllDays, startDate, endDate);
     });
 
+    List<Coordinate> summedCoordinates = GroupSumByDate(balanceTrendList);
+    setState(() {
+      balanceTrendList.clear();
+      balanceTrendList.addAll(summedCoordinates);
+    });
+  }
+
+  void updateCashFlowGraph(
+      List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
+    //Convert from transaction to coordinate and filtering by use
+    List<Coordinate> allCoordinatesIntoCoordinate_Income = allCoordinates
+        .where((element) => element.transactionType == TransactionType.Income)
+        .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
+        .toList();
+
+    List<Coordinate> allCoordinatesIntoCoordinate_Expense = allCoordinates
+        .where((element) => element.transactionType == TransactionType.Expense)
+        .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
+        .toList();
+
+    setState(() {
+      incomeList = filterByDateRange(
+          allCoordinatesIntoCoordinate_Income, AllDays, startDate, endDate);
+
+      expenseList = filterByDateRange(
+          allCoordinatesIntoCoordinate_Expense, AllDays, startDate, endDate);
+    });
+
+    List<Coordinate> summedCoordinates_Income = GroupSumByDate(incomeList);
+    List<Coordinate> summedCoordinates_Expense = GroupSumByDate(expenseList);
+
+    setState(() {
+      incomeList.clear();
+      incomeList.addAll(summedCoordinates_Income);
+
+      expenseList.clear();
+      expenseList.addAll(summedCoordinates_Expense);
+    });
+  }
+
+  List<Coordinate> GroupSumByDate(List<Coordinate> list) {
     Map<DateTime, double> amountMap = {};
 
-    for (var expense in filterPreviewList) {
-      DateTime expenseDate =
-          DateTime(expense.date.year, expense.date.month, expense.date.day);
-      amountMap[expenseDate] = (amountMap[expenseDate] ?? 0) + expense.value;
+    for (var coordinate in list) {
+      DateTime coordinateDate = DateTime(
+          coordinate.date.year, coordinate.date.month, coordinate.date.day);
+      amountMap[coordinateDate] =
+          (amountMap[coordinateDate] ?? 0) + coordinate.amount;
     }
 
     // Now `amountMap` contains the summed amounts for each unique date
-    List<Coordinate> summedExpenses = amountMap.entries
-        .map((entry) =>
-            Coordinate(date: entry.key, value: entry.value, legend: ""))
+    List<Coordinate> summedCoordinates = amountMap.entries
+        .map((entry) => Coordinate(date: entry.key, amount: entry.value))
         .toList();
 
-    summedExpenses.sort((a, b) => a.date.compareTo(b.date));
-    setState(() {
-      filterPreviewList.clear();
-      filterPreviewList.addAll(summedExpenses);
-    });
+    summedCoordinates.sort((a, b) => a.date.compareTo(b.date));
+    return summedCoordinates;
+  }
 
-    print(filterPreviewList.map((element) {
-      return "${element.value} ${element.date}";
-    }));
-
-    // Set<DateTime> existingDates =
-    //     filterPreviewList.map((expense) => expense.date).toSet();
-
-    // for (DateTime date = startDate;
-    //     date.isBefore(endDate) || isSameDay(date, endDate);
-    //     date = date.add(const Duration(days: 1))) {
-    //   if (!containsDate(existingDates, date)) {
-    //     // If the date is not in the existing dates, add an Expense with amount 0
-    //     filterPreviewList.add(Expense(date: date, amount: 0));
-    //   }
-    // }
-
-    // DateTime minDate = FilterPreviewList.map((expense) => expense.date)
-    //     .reduce((value, element) => value.isBefore(element) ? value : element);
-
-    // DateTime maxDate = FilterPreviewList.map((expense) => expense.date)
-    //     .reduce((value, element) => value.isAfter(element) ? value : element);
-
-    // if (!isSameDay(minDate, startDate)) {
-    //   FilterPreviewList.add(Expense(startDate, 0));
-    //   if (!isSameDay(minDate.add(const Duration(days: -1)), startDate)) {
-    //     FilterPreviewList.add(
-    //         Expense(DateTime.now().add(const Duration(days: -30)), 0));
-    //     print("ba");
-    //   }
-    // }
+  List<Coordinate> filterByDateRange(List<Coordinate> list,
+      List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
+    return (list + AllDays)
+        .where((Coordinate) =>
+            (Coordinate.date.isAfter(startDate) ||
+                isSameDay(Coordinate.date, startDate)) &&
+            (Coordinate.date.isBefore(endDate) ||
+                isSameDay(Coordinate.date, endDate)))
+        .toList();
   }
 }
