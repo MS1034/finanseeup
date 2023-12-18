@@ -1,76 +1,104 @@
-import 'dart:math';
-
-import 'package:finanseeup/widgets/expense.dart';
+import 'package:finanseeup/controllers/line_graph_controller.dart';
+import 'package:finanseeup/controllers/pie_chart_controller.dart';
+import 'package:finanseeup/controllers/statistics_controller.dart';
+import 'package:finanseeup/widgets/lineBarGraph.dart';
+import 'package:finanseeup/widgets/pieChart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-
-// class Expense {
-//   final DateTime date;
-//   final double amount;
-
-//   Expense(this.date, this.amount);
-// }
 
 class Statistics extends StatefulWidget {
-  const Statistics({super.key});
+  const Statistics({Key? key}) : super(key: key);
 
   @override
-  _Statistics_State createState() => _Statistics_State();
+  _StatisticsState createState() => _StatisticsState();
 }
 
-class _Statistics_State extends State<Statistics> {
-  String selectedFilter = '7D'; // Default filter
-  DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
-  DateTime endDate = DateTime.now();
-
-  List<Coordinate> allExpenses = List.generate(
-    50,
-    (index) => Coordinate(
-        date: DateTime.now().subtract(Duration(days: Random().nextInt(31))),
-        value: Random().nextDouble() *
-            1000.0 *
-            ((Random().nextInt(5) == 0) ? -1.0 : 1.0),
-        legend: "Trend"),
-  );
-
-  List<Coordinate> filterPreviewList = [];
+class _StatisticsState extends State<Statistics>
+    with SingleTickerProviderStateMixin {
+  late StatisticsController _controller;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Call filterRecords after the widget is fully rendered
-      filterRecords(selectedFilter);
-    });
+    _controller = StatisticsController(
+      onStateChanged: () {
+        setState(() {});
+      },
+    );
+
+    _controller.initState();
+    _controller.tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    void initState() {
-      super.initState();
-      // Schedule the filterRecords function to be called after the widget is rendered.
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        filterRecords(selectedFilter);
-      });
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Statistics'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              _showFilterBottomSheet(context);
-            },
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Statistics'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.filter_list),
+              onPressed: () {
+                _showFilterBottomSheet(context);
+              },
+            ),
+          ],
+          bottom: TabBar(
+            controller: _controller.tabController,
+            tabs: const [
+              Tab(text: 'Balance Trend'),
+              Tab(text: 'Cash Flow'),
+              Tab(text: 'Spending'),
+            ],
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          lineGraph(seriesList: [filterPreviewList])
-        ],
+        ),
+        body: TabBarView(
+          controller: _controller.tabController,
+          children: [
+            ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                LineBarGraph(
+                  controller: LineBarGraphController(
+                    graph: "Balance Trend",
+                    currentCoordinates: _controller.balanceTrendList,
+                  ),
+                )
+              ],
+            ),
+            ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                LineBarGraph(
+                  controller: LineBarGraphController(
+                    graph: "Cash Flow",
+                    currentCoordinates: _controller.incomeList,
+                    currentCoordinates2: _controller.expenseList,
+                    legends: const ['Income', 'Expense'],
+                  ),
+                )
+              ],
+            ),
+            ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                PieChart(
+                  controller: PieChartController(
+                    graph: "Expenses Structure",
+                    currentPieces: _controller.spendings,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -82,15 +110,15 @@ class _Statistics_State extends State<Statistics> {
         return StatefulBuilder(
           builder: (context, setState) {
             return Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Filter by Date'),
-                  const SizedBox(height: 8.0),
+                  Text('Filter by Date'),
+                  SizedBox(height: 8.0),
                   _buildFilterOptions(setState),
-                  const SizedBox(height: 8.0),
+                  SizedBox(height: 8.0),
                   // _buildDateRangePicker(setState),
                 ],
               ),
@@ -118,133 +146,15 @@ class _Statistics_State extends State<Statistics> {
     return ElevatedButton(
       onPressed: () {
         setState(() {
-          selectedFilter = filter;
-          filterRecords(selectedFilter);
+          _controller.selectedFilter = filter;
+          _controller.filterRecords(_controller.selectedFilter);
         });
       },
-      style: selectedFilter == filter
-          ? ElevatedButton.styleFrom(backgroundColor: Colors.blue)
-          : null,
       child: Text(filter),
+      style: _controller.selectedFilter == filter
+          ? ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue, foregroundColor: Colors.white)
+          : null,
     );
-  }
-
-  Widget _buildDateRangePicker(Function setState) {
-    return Row(
-      children: [
-        const Expanded(
-          child: Text('Select Date Range'),
-        ),
-        IconButton(
-          icon: const Icon(Icons.calendar_today),
-          onPressed: () async {
-            DateTimeRange? pickedRange = await showDateRangePicker(
-              context: context,
-              initialDateRange: DateTimeRange(start: startDate, end: endDate),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2030),
-            );
-
-            if (pickedRange != null) {
-              setState(() {
-                startDate = pickedRange.start;
-                endDate = pickedRange.end;
-              });
-            }
-          },
-        ),
-      ],
-    );
-  }
-
-  void filterRecords(String filter) {
-    int range = int.parse(filter.substring(0, filter.length - 1));
-    DateTime startDate = DateTime.now().subtract(Duration(days: range - 1)),
-        endDate = DateTime.now();
-
-    bool isSameDay(DateTime date1, DateTime date2) {
-      return date1.year == date2.year &&
-          date1.month == date2.month &&
-          date1.day == date2.day;
-    }
-
-    bool containsDate(Set<DateTime> dates, DateTime date) {
-      for (var element in dates) {
-        if (isSameDay(element, date)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    // Initializing with 0 for all days
-    List<Coordinate> AllDays = [];
-    for (DateTime date = startDate;
-        date.isBefore(endDate) || isSameDay(date, endDate);
-        date = date.add(const Duration(days: 1))) {
-      AllDays.add(Coordinate(date: date, value: 0, legend: ""));
-    }
-
-    setState(() {
-      filterPreviewList = (allExpenses + AllDays)
-          .where((expense) =>
-              (expense.date.isAfter(startDate) ||
-                  isSameDay(expense.date, startDate)) &&
-              (expense.date.isBefore(endDate) ||
-                  isSameDay(expense.date, endDate)))
-          .toList();
-    });
-
-    Map<DateTime, double> amountMap = {};
-
-    for (var expense in filterPreviewList) {
-      DateTime expenseDate =
-          DateTime(expense.date.year, expense.date.month, expense.date.day);
-      amountMap[expenseDate] = (amountMap[expenseDate] ?? 0) + expense.value;
-    }
-
-    // Now `amountMap` contains the summed amounts for each unique date
-    List<Coordinate> summedExpenses = amountMap.entries
-        .map((entry) =>
-            Coordinate(date: entry.key, value: entry.value, legend: ""))
-        .toList();
-
-    summedExpenses.sort((a, b) => a.date.compareTo(b.date));
-    setState(() {
-      filterPreviewList.clear();
-      filterPreviewList.addAll(summedExpenses);
-    });
-
-    print(filterPreviewList.map((element) {
-      return "${element.value} ${element.date}";
-    }));
-
-    // Set<DateTime> existingDates =
-    //     filterPreviewList.map((expense) => expense.date).toSet();
-
-    // for (DateTime date = startDate;
-    //     date.isBefore(endDate) || isSameDay(date, endDate);
-    //     date = date.add(const Duration(days: 1))) {
-    //   if (!containsDate(existingDates, date)) {
-    //     // If the date is not in the existing dates, add an Expense with amount 0
-    //     filterPreviewList.add(Expense(date: date, amount: 0));
-    //   }
-    // }
-
-    // DateTime minDate = FilterPreviewList.map((expense) => expense.date)
-    //     .reduce((value, element) => value.isBefore(element) ? value : element);
-
-    // DateTime maxDate = FilterPreviewList.map((expense) => expense.date)
-    //     .reduce((value, element) => value.isAfter(element) ? value : element);
-
-    // if (!isSameDay(minDate, startDate)) {
-    //   FilterPreviewList.add(Expense(startDate, 0));
-    //   if (!isSameDay(minDate.add(const Duration(days: -1)), startDate)) {
-    //     FilterPreviewList.add(
-    //         Expense(DateTime.now().add(const Duration(days: -30)), 0));
-    //     print("ba");
-    //   }
-    // }
   }
 }
