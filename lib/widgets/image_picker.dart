@@ -11,7 +11,7 @@ import '../controllers/transaction_controller.dart';
 class AppImagePicker extends StatefulWidget {
   final TransactionController controller;
 
-  const AppImagePicker({Key? key, required this.controller}) : super(key: key);
+  const AppImagePicker({super.key, required this.controller});
 
   @override
   _AppImagePickerState createState() => _AppImagePickerState();
@@ -67,8 +67,8 @@ class _AppImagePickerState extends State<AppImagePicker> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      leading: Icon(Icons.camera),
-                      title: Text('Take Photo'),
+                      leading: const Icon(Icons.camera),
+                      title: const Text('Take Photo'),
                       onTap: ()  async {
                         print("picking Image");
                         print("=========================================");
@@ -77,8 +77,8 @@ class _AppImagePickerState extends State<AppImagePicker> {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.photo_library),
-                      title: Text('Choose from Gallery'),
+                      leading: const Icon(Icons.photo_library),
+                      title: const Text('Choose from Gallery'),
                       onTap: () async {
                         print("picking Image");
                         print("=========================================");
@@ -91,10 +91,10 @@ class _AppImagePickerState extends State<AppImagePicker> {
               },
             );
           },
-          child: Icon(Icons.add_a_photo),
+          child: const Icon(Icons.add_a_photo),
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 20.0),
+          margin: const EdgeInsets.symmetric(vertical: 20.0),
           height: 200.0,
           width: 200.0,
           decoration: BoxDecoration(
@@ -104,12 +104,12 @@ class _AppImagePickerState extends State<AppImagePicker> {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: _pickedImage == null
-              ? Center(child: Text('No Image selected'))
+              ? const Center(child: Text('No Image selected'))
               : ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Image.file(

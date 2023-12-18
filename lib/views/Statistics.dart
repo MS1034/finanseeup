@@ -2,9 +2,7 @@ import 'dart:math';
 
 import 'package:finanseeup/widgets/expense.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/scheduler.dart';
-import 'package:intl/intl.dart';
 
 // class Expense {
 //   final DateTime date;
@@ -40,7 +38,7 @@ class _Statistics_State extends State<Statistics> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // Call filterRecords after the widget is fully rendered
       filterRecords(selectedFilter);
     });
@@ -51,7 +49,7 @@ class _Statistics_State extends State<Statistics> {
     void initState() {
       super.initState();
       // Schedule the filterRecords function to be called after the widget is rendered.
-      SchedulerBinding.instance!.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         filterRecords(selectedFilter);
       });
     }
@@ -84,15 +82,15 @@ class _Statistics_State extends State<Statistics> {
         return StatefulBuilder(
           builder: (context, setState) {
             return Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Filter by Date'),
-                  SizedBox(height: 8.0),
+                  const Text('Filter by Date'),
+                  const SizedBox(height: 8.0),
                   _buildFilterOptions(setState),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   // _buildDateRangePicker(setState),
                 ],
               ),
@@ -124,21 +122,21 @@ class _Statistics_State extends State<Statistics> {
           filterRecords(selectedFilter);
         });
       },
-      child: Text(filter),
       style: selectedFilter == filter
           ? ElevatedButton.styleFrom(backgroundColor: Colors.blue)
           : null,
+      child: Text(filter),
     );
   }
 
   Widget _buildDateRangePicker(Function setState) {
     return Row(
       children: [
-        Expanded(
+        const Expanded(
           child: Text('Select Date Range'),
         ),
         IconButton(
-          icon: Icon(Icons.calendar_today),
+          icon: const Icon(Icons.calendar_today),
           onPressed: () async {
             DateTimeRange? pickedRange = await showDateRangePicker(
               context: context,

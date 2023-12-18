@@ -2,7 +2,6 @@ import 'package:finanseeup/models/model_category.dart';
 import 'package:finanseeup/utils/helpers/icon_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class CategoriesView extends StatelessWidget {
   const CategoriesView({super.key});

@@ -1,20 +1,16 @@
-import 'package:finanseeup/controllers/transaction_controller.dart';
-import 'package:finanseeup/models/enum_account_type.dart';
+import 'package:finanseeup/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/account.dart';
 
 class AccountsView extends StatelessWidget {
-  const AccountsView({Key? key}) : super(key: key);
+  const AccountsView({super.key, required this.onTapCallback});
+  final Function(Account) onTapCallback;
 
   @override
   Widget build(BuildContext context) {
-    final List<Account> accounts = [
-      Account(id:"123456",accountName: "accountName", type: AccountType.Cash, currency: "PKR", color: Colors.red),
-      Account(id:"123456",accountName: "accountName1", type: AccountType.Cash, currency: "PKR", color: Colors.yellow),
-      Account(id:"123456",accountName: "accountName3", type: AccountType.Cash, currency: "PKR"),
-    ];
+    final controller = AccountController.instance;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Account"),
@@ -29,22 +25,26 @@ class AccountsView extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: accounts.length,
-        itemBuilder: (context, index) {
-          final account = accounts[index];
-          return ListTile(
-            title: Text(account.accountName!),
-            subtitle: Text(account.type?.name ?? ""),
+      body: Obx(
+        () => ListView.builder(
+          itemCount: controller.accounts.length,
+          itemBuilder: (context, index) {
+            final account = controller.accounts.value[index];
+            return ListTile(
+              title: Text(account.accountName!),
+              subtitle: Text(account.type ?? ""),
+              leading: CircleAvatar(
+                backgroundColor: account.color ?? Colors.black,
+              ),
+              onTap: () {
+                print(account);
 
-            leading: CircleAvatar(
-              backgroundColor: account.color ?? Colors.black,
-            ),
-            onTap: () {
-              Get.back(result: account); // Return the selected account to the previous screen
-            },
-          );
-        },
+                onTapCallback(account);
+                // Return the selected account to the previous screen
+              },
+            );
+          },
+        ),
       ),
     );
   }

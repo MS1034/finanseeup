@@ -3,7 +3,6 @@ import 'package:finanseeup/controllers/forget_password_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../utils/consts/image_strings.dart';
 import '../utils/consts/sizes.dart';

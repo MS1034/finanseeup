@@ -28,7 +28,7 @@ class SignInController extends GetxController {
   final NetworkManager _networkManager = Get.put(NetworkManager());
   final userController = Get.put(UserController());
 
-  SignInController() {}
+  SignInController();
 
   @override
   void onReady() {

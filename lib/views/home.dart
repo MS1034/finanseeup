@@ -1,11 +1,9 @@
 import 'package:finanseeup/data/repositories/authentication_repository.dart';
-import 'package:finanseeup/utils/consts/image_strings.dart';
-import 'package:finanseeup/utils/helpers/colors.dart';
+import 'package:finanseeup/views/main_page.dart';
 import 'package:finanseeup/views/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key, required this.title});
@@ -20,14 +18,14 @@ class _ForgetPasswordPageState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 2,
       child: Scaffold(
           appBar: AppBar(
             title: const Text('Home'),
             actions: [
               IconButton(
-                icon: Icon(Icons.logout), // Cross icon
+                icon: const Icon(Icons.logout), // Cross icon
                 onPressed: () => {
                   // GetStorage().erase();
                   AuthenticationRepository.instance.logout()
@@ -37,27 +35,24 @@ class _ForgetPasswordPageState extends State<HomeView> {
             bottom: const TabBar(
               tabs: <Widget>[
                 Tab(
-                  icon: Icon(Icons.account_balance_wallet),
+                  // icon: Icon(Icons.account_balance_wallet),
+                  text: "Accounts",
                 ),
                 Tab(
-                  icon: Icon(Icons.beach_access_sharp),
+                  text: "Budget and Goals",
+
                 ),
               ],
             ),
           ),
           body:
-          TabBarView(
+          const TabBarView(
             children: <Widget>[
+              MainPage(),
+
               Center(
-                child: ElevatedButton(
-                    onPressed: () => {
-                          // GetStorage().erase();
-                          AuthenticationRepository.instance.logout()
-                        },
-                    child: const Text("TransactionFormViewt")),
-              ),
-              const Center(
                 child: Text("It's rainy here"),
+                //Add Buget and Goals
               ),
             ],
           ),
@@ -73,7 +68,7 @@ class _ForgetPasswordPageState extends State<HomeView> {
                   child: const Icon(Icons.swap_horiz_outlined),
 
                   label: "Transfer",
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   onTap: () => Get.to(const RecordView(initialTabNumber: 3,))),
 
               

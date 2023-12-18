@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class TimerController extends GetxController {
   final int resendDuration = 60; // Change this to your desired timer duration

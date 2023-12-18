@@ -9,7 +9,7 @@ import '../utils/consts/text_strings.dart';
 import 'sign_in.dart';
 
 class Welcome extends StatefulWidget {
-  const Welcome({Key? key}) : super(key: key);
+  const Welcome({super.key});
 
   @override
   State<Welcome> createState() => _WelcomeState();
@@ -28,7 +28,7 @@ class _WelcomeState extends State<Welcome> {
     );
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.all(30.0),
+      padding: const EdgeInsets.all(30.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -50,15 +50,15 @@ class _WelcomeState extends State<Welcome> {
               OutlinedButton(
                   onPressed: () {
                     deviceStorage.write("IsFirstTime", false);
-                    Get.to(() => LoginView());
+                    Get.to(() => const LoginView());
                   },
-                  child: Text("Log In")),
+                  child: const Text("Log In")),
               ElevatedButton(
                   onPressed: () {
                     deviceStorage.write("IsFirstTime", false);
-                    Get.to(() => SignUpView());
+                    Get.to(() => const SignUpView());
                   },
-                  child: Text("Sign Up"))
+                  child: const Text("Sign Up"))
             ],
           )
         ],

@@ -1,4 +1,3 @@
-import 'package:finanseeup/views/reset_password.dart';
 import 'package:finanseeup/controllers/forget_password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,7 @@ import '../utils/validators/validations.dart';
 import '../widgets/email_field.dart';
 
 class ForgetPasswordView extends StatelessWidget {
-  const ForgetPasswordView({Key? key}) : super(key: key);
+  const ForgetPasswordView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class ForgetPasswordView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: EdgeInsets.all(AppSizes.defaultSpace),
+        padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

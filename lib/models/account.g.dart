@@ -8,12 +8,14 @@ part of 'account.dart';
 
 Account _$AccountFromJson(Map<String, dynamic> json) => Account(
       accountName: json['accountName'] as String?,
-      type: $enumDecodeNullable(_$AccountTypeEnumMap, json['type']),
+      type: json['type'] as String?,
       currency: json['currency'] as String?,
       color: _$JsonConverterFromJson<int, Color>(
           json['color'], const ColorSerializer().fromJson),
       id: json['id'] as String?,
-      amount: (json['amount'] as num?)?.toDouble() ?? 0,
+      amount: json['amount'] is String
+          ? double.tryParse(json['amount'] ?? '') ?? 0
+          : (json['amount'] as num?)?.toDouble() ?? 0,
     );
 
 Map<String, dynamic> _$AccountToJson(Account instance) {
@@ -27,18 +29,13 @@ Map<String, dynamic> _$AccountToJson(Account instance) {
 
   writeNotNull('id', instance.id);
   val['accountName'] = instance.accountName;
-  val['type'] = _$AccountTypeEnumMap[instance.type];
+  val['type'] = instance.type;
   val['currency'] = instance.currency;
   val['amount'] = instance.amount;
   val['color'] = _$JsonConverterToJson<int, Color>(
       instance.color, const ColorSerializer().toJson);
   return val;
 }
-
-const _$AccountTypeEnumMap = {
-  AccountType.Cash: 'Cash',
-  AccountType.Credit: 'Credit',
-};
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,

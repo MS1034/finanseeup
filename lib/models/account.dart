@@ -1,6 +1,7 @@
 import 'dart:ui';
+
 import 'package:json_annotation/json_annotation.dart';
-import 'enum_account_type.dart';
+
 import 'json_color_convertor.dart';
 
 part 'account.g.dart';
@@ -11,7 +12,7 @@ class Account {
   String? id;
 
   final String? accountName;
-  final AccountType? type;
+  final String? type;
   final String? currency;
 
   @JsonKey(defaultValue: 0)
@@ -20,13 +21,14 @@ class Account {
   @ColorSerializer()
   Color? color;
 
-  Account(
-      {required this.accountName,
-      required this.type,
-      required this.currency,
-      this.color,
-      this.id,
-      this.amount});
+  Account({
+    required this.accountName,
+    required this.type,
+    required this.currency,
+    this.color,
+    this.id,
+    this.amount,
+  });
 
   // Factory method to create an Account object from a JSON map
   factory Account.fromJson(Map<String, dynamic> json) =>
@@ -48,16 +50,27 @@ class Account {
     return 'Account{id: $id, accountName: $accountName, type: $type, currency: $currency, amount: $amount, color: $color}';
   }
 
-// Override the == operator
+  // Override the == operator
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Account &&
           runtimeType == other.runtimeType &&
           accountName == other.accountName &&
-         type == other.type;
+          type == other.type;
 
   // Override hashCode if you override ==
   @override
   int get hashCode => id.hashCode;
+
+  Account copyWith({double? amount}) {
+    return Account(
+      id: id,
+      accountName: accountName,
+      type: type,
+      currency: currency,
+      amount: amount ?? this.amount,
+      color: color,
+    );
+  }
 }

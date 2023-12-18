@@ -14,7 +14,7 @@ class Coordinate {
 class lineGraph extends StatefulWidget {
   final List<List<Coordinate>> seriesList;
 
-  const lineGraph({Key? key, required this.seriesList}) : super(key: key);
+  const lineGraph({super.key, required this.seriesList});
 
   @override
   _lineGraphState createState() => _lineGraphState();

@@ -10,17 +10,17 @@ class AppTheme {
     textTheme: TextTheme(
       bodySmall:
           TextStyle(fontSize: AppSizes.fontSizeXs, color: Colors.grey.shade400),
-      titleMedium: TextStyle(
+      titleMedium: const TextStyle(
         fontWeight: FontWeight.w700,
       ),
-      titleLarge: TextStyle(
+      titleLarge: const TextStyle(
         fontWeight: FontWeight.w900,
       ),
-      headlineMedium: TextStyle(
+      headlineMedium: const TextStyle(
         fontWeight: FontWeight.w900,
       ),
       headlineSmall:
-          TextStyle(fontWeight: FontWeight.w700, fontSize: AppSizes.fontSizeXL),
+          const TextStyle(fontWeight: FontWeight.w700, fontSize: AppSizes.fontSizeXL),
     ),
     buttonTheme: const ButtonThemeData(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -43,17 +43,17 @@ class AppTheme {
     textTheme: TextTheme(
       bodySmall:
           TextStyle(fontSize: AppSizes.fontSizeXs, color: Colors.grey.shade400),
-      headlineMedium: TextStyle(
+      headlineMedium: const TextStyle(
         fontWeight: FontWeight.w900,
       ),
-      titleMedium: TextStyle(
+      titleMedium: const TextStyle(
         fontWeight: FontWeight.w700,
       ),
-      titleLarge: TextStyle(
+      titleLarge: const TextStyle(
         fontWeight: FontWeight.w900,
       ),
       headlineSmall:
-          TextStyle(fontWeight: FontWeight.w900, fontSize: AppSizes.fontSizeXL),
+          const TextStyle(fontWeight: FontWeight.w900, fontSize: AppSizes.fontSizeXL),
     ),
     buttonTheme: const ButtonThemeData(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

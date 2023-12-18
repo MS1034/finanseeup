@@ -1,1 +1,1 @@
-enum AccountType { Cash, Credit }
+enum AccountType { Cash, Wallet }

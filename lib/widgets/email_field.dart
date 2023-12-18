@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class EmailField extends StatefulWidget {
   const EmailField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.hintText,
     required this.validator,
-  }) : super(key: key);
+  });
 
   final TextEditingController controller;
   final String labelText;

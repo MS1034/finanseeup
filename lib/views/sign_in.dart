@@ -52,7 +52,7 @@ class LoginView extends StatelessWidget {
                     softWrap: true,
                   ),
                   TextButton(
-                    onPressed: () => Get.to(() =>  SignUpView()),
+                    onPressed: () => Get.to(() =>  const SignUpView()),
                     child: const Text(
                       AppTexts.signUp,
                       style: TextStyle(fontSize: 12),

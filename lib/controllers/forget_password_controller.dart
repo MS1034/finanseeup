@@ -1,13 +1,10 @@
 import 'package:finanseeup/controllers/timer_controller.dart';
 import 'package:finanseeup/data/repositories/authentication_repository.dart';
-import 'package:finanseeup/data/repositories/user_repository.dart';
-import 'package:finanseeup/models/user_model.dart';
 import 'package:finanseeup/utils/consts/image_strings.dart';
 
 import 'package:finanseeup/utils/popups/full_screen_loader.dart'
     show AppFullScreenLoader;
 import 'package:finanseeup/views/reset_password.dart';
-import 'package:finanseeup/views/verify_email.dart';
 import 'package:finanseeup/widgets/loaders.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';

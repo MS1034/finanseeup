@@ -45,7 +45,7 @@ class AppAnimationLoaderWidget extends StatelessWidget {
                 child: Text(
                   actionText!,
                   style: Theme.of(context)
-                      .textTheme.bodyText2!
+                      .textTheme.bodyMedium!
                       .apply(color: Colors.white),
                 ),
               ),

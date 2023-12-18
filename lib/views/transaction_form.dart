@@ -1,37 +1,37 @@
-import 'dart:math';
-
 import 'package:finanseeup/controllers/transaction_controller.dart';
 import 'package:finanseeup/models/label.dart';
 import 'package:finanseeup/utils/helpers/colors.dart';
 import 'package:finanseeup/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+
 import '../models/enum_payment_type.dart';
 import '../utils/consts/sizes.dart';
+import '../widgets/color_picker.dart';
 
 class TransactionFormView extends StatelessWidget {
-
   final TransactionController controller;
   final int number;
 
   // Constructor for TransactionFormView
-  TransactionFormView({Key? key, required this.controller, required this.number}) : super(key: key);
+  const TransactionFormView(
+      {super.key, required this.controller, required this.number});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
           onPressed: () => Get.back(),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
             onPressed: () {
-             controller.addTransaction(this.number+1);
+              controller.addTransaction(number + 1);
             },
           ),
         ],
@@ -51,10 +51,9 @@ class TransactionFormView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    child: MultiSelectLabelsField(controller: controller),
                     width: 0.75 * AppHelperFunctions.screenWidth(),
+                    child: MultiSelectLabelsField(controller: controller),
                   ),
-
                   AddLabelButton(controller: controller),
                 ],
               ),
@@ -62,8 +61,9 @@ class TransactionFormView extends StatelessWidget {
               const SizedBox(
                 height: AppSizes.defaultSpace,
               ),
-              AppImagePicker(controller: controller,),
-
+              AppImagePicker(
+                controller: controller,
+              ),
             ],
           ),
         ),
@@ -75,7 +75,7 @@ class TransactionFormView extends StatelessWidget {
 class PaymentTypeField extends StatelessWidget {
   final TransactionController controller;
 
-  PaymentTypeField({required this.controller});
+  const PaymentTypeField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class PaymentTypeField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: 'Payment Type',
         suffixIcon: IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () => {_showPopup(controller)},
         ),
       ),
@@ -118,13 +118,13 @@ class PaymentTypeField extends StatelessWidget {
 class PayeeField extends StatelessWidget {
   final TransactionController controller;
 
-  PayeeField({required this.controller});
+  const PayeeField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller.payeeController,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: 'Payee',
       ),
     );
@@ -134,7 +134,7 @@ class PayeeField extends StatelessWidget {
 class DateTimeFields extends StatelessWidget {
   final TransactionController controller;
 
-  DateTimeFields({required this.controller});
+  const DateTimeFields({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class DateTimeFields extends StatelessWidget {
           child: IgnorePointer(
             child: TextFormField(
               controller: controller.dateController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Date',
               ),
             ),
@@ -156,7 +156,7 @@ class DateTimeFields extends StatelessWidget {
           child: IgnorePointer(
             child: TextFormField(
               controller: controller.timeController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Time',
               ),
             ),
@@ -179,7 +179,7 @@ class DateTimeFields extends StatelessWidget {
       controller.selectedDate.value = picked;
       controller.dateController.text =
           picked.toLocal().toString().split(' ')[0];
-    controller.addDate(picked);
+      controller.addDate(picked);
     }
   }
 
@@ -194,7 +194,6 @@ class DateTimeFields extends StatelessWidget {
       controller.selectedTime.value = picked;
       controller.timeController.text = picked.format(context);
       controller.addTime(picked);
-
     }
   }
 }
@@ -202,18 +201,18 @@ class DateTimeFields extends StatelessWidget {
 class MultiSelectLabelsField extends StatelessWidget {
   final TransactionController controller;
 
-  MultiSelectLabelsField({required this.controller});
+  const MultiSelectLabelsField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => MultiSelectBottomSheetField(
-        buttonIcon: Icon(Icons.arrow_drop_down),
+        buttonIcon: const Icon(Icons.arrow_drop_down),
         initialChildSize: 0.4,
         listType: MultiSelectListType.CHIP,
         searchable: true,
-        buttonText: Text("Favorite Labels"),
-        title: Text("Labels"),
+        buttonText: const Text("Favorite Labels"),
+        title: const Text("Labels"),
         items: controller.getLabels,
         onConfirm: (values) {
           controller.selectedLabels.assignAll(values.cast<String>());
@@ -231,13 +230,13 @@ class MultiSelectLabelsField extends StatelessWidget {
 class AddLabelButton extends StatelessWidget {
   final TransactionController controller;
 
-  AddLabelButton({required this.controller});
+  const AddLabelButton({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () => {_showPopupAddLabel(controller)},
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
     );
   }
 
@@ -246,29 +245,34 @@ class AddLabelButton extends StatelessWidget {
       context: Get.context!,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: controller.labelController,
-                decoration: InputDecoration(labelText: 'Enter Label'),
+                decoration: const InputDecoration(labelText: 'Enter Label'),
               ),
-              SizedBox(height: 16.0),
-              OutlinedButton(
-                onPressed: () {
-                  _showColorPicker(controller);
-                },
-                child: Text('Pick Color'),
+              const SizedBox(height: 16.0),
+              ColorPickerField(
+                controller: controller,
+                initialText: '',
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
+              // OutlinedButton(
+              //   onPressed: () {
+              //     _showColorPicker(controller);
+              //   },
+              //   child: const Text('Pick Color'),
+              // ),
+              const SizedBox(height: 16.0),
               TextButton(
                 onPressed: () {
                   _addToLabelList(controller);
                 },
-                child: Text('Add to List'),
+                child: const Text('Add to List'),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
             ],
           ),
         );
@@ -315,14 +319,14 @@ class AddLabelButton extends StatelessWidget {
 class DescriptionField extends StatelessWidget {
   final TransactionController controller;
 
-  DescriptionField({required this.controller});
+  const DescriptionField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller.descriptionController,
       maxLines: 1,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: 'Description',
       ),
     );

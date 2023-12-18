@@ -1,5 +1,4 @@
 import 'package:finanseeup/controllers/transaction_controller.dart';
-import 'package:finanseeup/views/home.dart';
 import 'package:finanseeup/widgets/transaction_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +8,7 @@ import 'package:onscreen_num_keyboard/onscreen_num_keyboard.dart';
 class RecordView extends StatefulWidget {
   final int initialTabNumber;
 
-  const RecordView({Key? key, required this.initialTabNumber})
-      : super(key: key);
+  const RecordView({super.key, required this.initialTabNumber});
 
   @override
   State<RecordView> createState() => _RecordViewState();
@@ -34,12 +32,12 @@ class _RecordViewState extends State<RecordView> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.close), // Tick icon
+          icon: const Icon(Icons.close), // Tick icon
           onPressed: () => Get.back(),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.check), // Cross icon
+            icon: const Icon(Icons.check), // Cross icon
             onPressed: () {
               controller.addTransaction(_tabController.index+1);
             },

@@ -9,7 +9,7 @@ part of 'transaction.dart';
 TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     TransactionModel(
       accountId: json['accountId'] as String,
-      category: json['category'] as String,
+      category: json['category'] as String?,
       amount: (json['amount'] as num).toDouble(),
       paymentType: json['paymentType'] as String?,
       description: json['description'] as String?,
@@ -21,7 +21,9 @@ TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['dateTime'] as String),
       transactionType: json['transactionType'] as String?,
       id: json['id'] as String?,
-    )..receiptImage = json['receiptImage'] as String?;
+    )
+      ..accountIdTo = json['accountIdTo'] as String?
+      ..receiptImage = json['receiptImage'] as String?;
 
 Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) {
   final val = <String, dynamic>{};
@@ -34,9 +36,10 @@ Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) {
 
   writeNotNull('id', instance.id);
   val['accountId'] = instance.accountId;
-  val['category'] = instance.category;
+  writeNotNull('category', instance.category);
   val['amount'] = instance.amount;
-  writeNotNull('description', instance.description);
+  writeNotNull('accountIdTo', instance.accountIdTo);
+  val['description'] = instance.description;
   writeNotNull('labels', instance.labels);
   writeNotNull('payee', instance.payee);
   writeNotNull('dateTime', instance.dateTime?.toIso8601String());

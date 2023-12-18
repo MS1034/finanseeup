@@ -3,8 +3,6 @@ import 'package:finanseeup/models/user_model.dart';
 import 'package:finanseeup/widgets/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class UserController extends GetxController {
   static UserController get instance => Get.find();

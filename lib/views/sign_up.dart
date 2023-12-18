@@ -7,14 +7,14 @@ import '../utils/consts/text_strings.dart';
 import '../widgets/google_sign_in_button.dart';
 
 class SignUpView extends StatelessWidget {
-  SignUpView({super.key});
+  const SignUpView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: 60, left: 15, right: 15, bottom: 15),
+          padding: const EdgeInsets.only(top: 60, left: 15, right: 15, bottom: 15),
           child: Column(
             children: [
               Text(
@@ -24,7 +24,7 @@ class SignUpView extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              SignupForm(),
+              const SignupForm(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -50,9 +50,9 @@ class SignUpView extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Container(
+              const SizedBox(
                   width: double.infinity,
-                  child: const GoogleSignInButton(
+                  child: GoogleSignInButton(
                     text: AppTexts.signupWithGoogle,
                   )),
             ],

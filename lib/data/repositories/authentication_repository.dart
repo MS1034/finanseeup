@@ -4,9 +4,9 @@ import 'package:finanseeup/views/verify_email.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../exceptions/app_exceptions.dart';
@@ -20,7 +20,6 @@ class AuthenticationRepository extends GetxController {
 
   User? get authUser => _auth.currentUser;
 
-
   /// Called from main. dart on opp launch
   @override
   void onReady() {
@@ -29,14 +28,11 @@ class AuthenticationRepository extends GetxController {
   }
 
   screenRedirect() async {
-
-    if(kDebugMode)
-      {
-        print("object is screen");
-        print( _auth.currentUser);
-        print("================================Subhna========================");
-
-      }
+    if (kDebugMode) {
+      print("object is screen");
+      print(_auth.currentUser);
+      print("================================Subhna========================");
+    }
     User? user = _auth.currentUser;
     if (user != null) {
       if (user.emailVerified) {
@@ -46,11 +42,9 @@ class AuthenticationRepository extends GetxController {
       }
     } else {
       deviceStorage.writeIfNull("IsFirstTime", true);
-    // deviceStorage.read("IsFirstTime")==false?Get.to(()=> const Welcome()):Get.to( const OnBoardingView());
+      // deviceStorage.read("IsFirstTime")==false?Get.to(()=> const Welcome()):Get.to( const OnBoardingView());
     }
   }
-
-
 
   /*                                      Email and Password                          */
   Future<UserCredential> registerWithEmailAndPassword(
@@ -95,7 +89,8 @@ class AuthenticationRepository extends GetxController {
       final GoogleSignInAccount? userAccount = await GoogleSignIn().signIn();
 
       // Obtain auth details from the request
-      final GoogleSignInAuthentication? googleAuth = await userAccount?.authentication;
+      final GoogleSignInAuthentication? googleAuth =
+          await userAccount?.authentication;
 
       // Create a new credential
       final OAuthCredential credentials = GoogleAuthProvider.credential(
@@ -104,11 +99,11 @@ class AuthenticationRepository extends GetxController {
       );
 
       // Sign in with the credential
-      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credentials);
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credentials);
 
       // Return the user credential
       return userCredential;
-
     } on FirebaseAuthException catch (e) {
       throw AppFirebaseAuthException(e.message);
     } on FirebaseException catch (e) {
@@ -122,13 +117,12 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-
   Future<void> logout() async {
     try {
       await GoogleSignIn().signOut();
 
       await _auth.signOut();
-      Get.offAll(()=>const LoginView());
+      Get.offAll(() => const LoginView());
     } on FirebaseAuthException catch (e) {
       throw AppFirebaseAuthException(e.message);
     } on FirebaseException catch (e) {
@@ -166,7 +160,7 @@ class AuthenticationRepository extends GetxController {
   /// Forget Password
   Future<void> sendPasswordResetEmail(String email) async {
     try {
-        await _auth.sendPasswordResetEmail(email: email);
+      await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw AppFirebaseAuthException(e.message);
     } on FirebaseException catch (e) {

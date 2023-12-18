@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:finanseeup/controllers/account_controller.dart';
 import 'package:finanseeup/data/repositories/transaction.dart';
 import 'package:finanseeup/models/model_category.dart';
 import 'package:finanseeup/models/transaction.dart';
 import 'package:finanseeup/widgets/loaders.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,6 @@ import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
 import '../models/account.dart';
-import '../models/enum_payment_type.dart';
 import '../models/enum_transaction_type.dart';
 import '../models/label.dart';
 import '../utils/consts/image_strings.dart';
@@ -24,6 +23,14 @@ import '../views/home.dart';
 class TransactionController extends GetxController {
   // Singleton instance
   static TransactionController get instance => Get.find();
+
+  RxList<TransactionModel> transactions = <TransactionModel>[].obs;
+
+  RxList<TransactionModel> get getTransactions => transactions;
+
+  TextEditingController selectedFilter = TextEditingController();
+
+  TextEditingController get SelectedFilter => selectedFilter;
 
   // Icon based on the number
   IconData getIconBasedOnNumber(int num) {
@@ -51,6 +58,16 @@ class TransactionController extends GetxController {
       return MultiSelectItem<LabelModel>(label, label.name);
     }).toList();
   }
+
+  TextEditingController get colorController => _colorController;
+  final TextEditingController _colorController = TextEditingController();
+  Rx<Color> pickerColor = Colors.blue.obs;
+
+  // Existing methods...
+
+  // Add the following method to update the color controller
+
+  Rx<Color> get PickerColor => pickerColor;
 
   final TextEditingController labelController = TextEditingController();
   final TextEditingController payeeController = TextEditingController();
@@ -218,8 +235,8 @@ class TransactionController extends GetxController {
     }
     return TransactionType.Transfer;
   }
-  final NetworkManager _networkManager = Get.put(NetworkManager());
 
+  final NetworkManager _networkManager = Get.put(NetworkManager());
 
   final _transaction = Get.put(TransactionRepository());
 
@@ -227,7 +244,6 @@ class TransactionController extends GetxController {
 
   Future<void> addTransaction(int num) async {
     try {
-
       AppFullScreenLoader.openLoadingDialog(
           "We are processing your information", AppImages.singleCoin);
       final isConnected = await _networkManager.isConnected();
@@ -237,7 +253,6 @@ class TransactionController extends GetxController {
 
         return;
       }
-
 
       TransactionType transactionType = getTransactionType(num);
       // Validate required fields before adding a record
@@ -255,10 +270,11 @@ class TransactionController extends GetxController {
         AppFullScreenLoader.stoploading();
 
         AppLoaders.errorSnackBar(
-            title: 'Error', message: 'Please fill in all required fields.');
+            title: 'Error', message: 'Please select To Account field.');
 
         return;
-      } else if (category.value.name == null) {
+      } else if (transactionType != TransactionType.Transfer &&
+          category.value.name == null) {
         AppFullScreenLoader.stoploading();
 
         AppLoaders.errorSnackBar(
@@ -275,15 +291,14 @@ class TransactionController extends GetxController {
 
       DateTime? dateTime = _dateTime;
 
-      var paymentType =
-          AppUtils.checkEmpty(payeeController.text) ;
+      var paymentType = AppUtils.checkEmpty(payeeController.text);
 
       // String? receiptImage = this.receiptImage;
 
       // Create a new TransactionModel instance
       TransactionModel record = TransactionModel(
         accountId: getSelectedAccount.value.id!,
-        category: category.value.name!,
+        category: category.value.name,
         amount: amount.value,
         description: description,
         labels: labels.isEmpty ? null : labels,
@@ -293,10 +308,27 @@ class TransactionController extends GetxController {
         paymentType: paymentType,
         transactionType: transactionType.name,
       );
-
-
+      if (num == 3) {
+        record.accountIdTo = account2.value.id!;
+      } else {
+        record.accountIdTo = null;
+      }
       // Save the record using your repository method
       await _transaction.addTransaction(record, receiptImage.value);
+      if (num == 1) {
+        AccountController.instance
+            .updateAmount(record.accountId, record.amount);
+      }
+      if (num == 2) {
+        AccountController.instance
+            .updateAmount(record.accountId, record.amount * -1);
+      }
+      if (num == 3) {
+        AccountController.instance
+            .updateAmount(record.accountId, record.amount * -1);
+        AccountController.instance
+            .updateAmount(record.accountIdTo!, record.amount);
+      }
 
       print("yes");
 
@@ -315,14 +347,15 @@ class TransactionController extends GetxController {
       dateController.clear();
       descriptionController.clear();
       receiptImage.value = null;
-      Get.to(const HomeView(title: "Home"));
+
+      AppFullScreenLoader.stoploading();
+
+      Get.offAll(const HomeView(title: "Home"));
 
       AppLoaders.successSnackBar(
         title: 'Saved',
-        message:
-        'Record added successfully.',
+        message: 'Record added successfully.',
       );
-
 
       // Show success message or navigate to another screen
       if (kDebugMode) {
