@@ -1,5 +1,6 @@
 import 'package:finanseeup/controllers/account_controller.dart';
 import 'package:finanseeup/views/accounts.dart';
+import 'package:finanseeup/views/transactionsView.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -91,7 +92,7 @@ class MainPage extends StatelessWidget {
                       ),
                       OutlinedButton.icon(
                         onPressed: () {
-                          // TODO: Implement logic for Records
+                          Get.to(const TransactionsView());
                         },
                         icon: const Icon(Icons.history), // Add the desired icon
                         label: const Text('Records'),

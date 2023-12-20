@@ -1,9 +1,9 @@
 import 'dart:math';
+
 import 'package:finanseeup/models/coordinate.dart';
 import 'package:finanseeup/models/piece.dart';
 import 'package:finanseeup/models/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
 
 class StatisticsController {
   late TabController tabController;
@@ -30,7 +30,7 @@ class StatisticsController {
   StatisticsController({required this.onStateChanged});
 
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       filterRecords(selectedFilter);
     });
   }
@@ -78,49 +78,49 @@ class StatisticsController {
 
   void updateCashFlowGraph(
       List<Coordinate> AllDays, DateTime startDate, DateTime endDate) {
-    List<Coordinate> allCoordinatesIntoCoordinate_Income = allCoordinates
+    List<Coordinate> allcoordinatesintocoordinateIncome = allCoordinates
         .where((element) => element.transactionType == "Income")
         .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
         .toList();
 
-    List<Coordinate> allCoordinatesIntoCoordinate_Expense = allCoordinates
+    List<Coordinate> allcoordinatesintocoordinateExpense = allCoordinates
         .where((element) => element.transactionType == "Expense")
         .map((e) => Coordinate(date: e.dateTime!, amount: e.amount))
         .toList();
 
     incomeList = filterByDateRange(
-        allCoordinatesIntoCoordinate_Income, AllDays, startDate, endDate);
+        allcoordinatesintocoordinateIncome, AllDays, startDate, endDate);
 
     expenseList = filterByDateRange(
-        allCoordinatesIntoCoordinate_Expense, AllDays, startDate, endDate);
+        allcoordinatesintocoordinateExpense, AllDays, startDate, endDate);
 
-    List<Coordinate> summedCoordinates_Income =
+    List<Coordinate> summedcoordinatesIncome =
         groupSumByDate_Coordinate(incomeList);
-    List<Coordinate> summedCoordinates_Expense =
+    List<Coordinate> summedcoordinatesExpense =
         groupSumByDate_Coordinate(expenseList);
 
     incomeList.clear();
-    incomeList.addAll(summedCoordinates_Income);
+    incomeList.addAll(summedcoordinatesIncome);
 
     expenseList.clear();
-    expenseList.addAll(summedCoordinates_Expense);
+    expenseList.addAll(summedcoordinatesExpense);
   }
 
   void updateSpendingGraph(DateTime startDate, DateTime endDate) {
-    List<Piece> allPiecesIntoCoordinate_Expense = allCoordinates
+    List<Piece> allpiecesintocoordinateExpense = allCoordinates
         .where((element) => (element.transactionType == "Expense" &&
             (element.dateTime!.isAfter(startDate) ||
                 isSameDay(element.dateTime!, startDate)) &&
             (element.dateTime!.isBefore(endDate) ||
                 isSameDay(element.dateTime!, endDate))))
-        .map((e) => Piece(category: e.category, amount: e.amount))
+        .map((e) => Piece(category: e.category ?? "", amount: e.amount))
         .toList();
 
-    List<Piece> summedPieces_Expense =
-        groupSumByDate_Piece(allPiecesIntoCoordinate_Expense);
+    List<Piece> summedpiecesExpense =
+        groupSumByDate_Piece(allpiecesintocoordinateExpense);
 
     spendings.clear();
-    spendings.addAll(summedPieces_Expense);
+    spendings.addAll(summedpiecesExpense);
   }
 
   List<Coordinate> groupSumByDate_Coordinate(List<Coordinate> list) {

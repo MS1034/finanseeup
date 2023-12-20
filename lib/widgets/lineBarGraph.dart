@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class LineBarGraph extends StatefulWidget {
   final LineBarGraphController controller;
 
-  const LineBarGraph({Key? key, required this.controller}) : super(key: key);
+  const LineBarGraph({super.key, required this.controller});
 
   @override
   _LineBarGraphState createState() => _LineBarGraphState();

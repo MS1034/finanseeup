@@ -1,5 +1,4 @@
 import 'package:finanseeup/bindings/general_bindings.dart';
-import 'package:finanseeup/data/repositories/account_repository.dart';
 import 'package:finanseeup/firebase_options.dart';
 import 'package:finanseeup/routes.dart';
 import 'package:finanseeup/utils/theme.dart';
@@ -38,11 +37,11 @@ Future<void> main() async {
   Workmanager().registerPeriodicTask(
     'updateAccountsTask',
     'updateAccountsTask',
-    frequency: Duration(minutes: 15),
+    frequency: const Duration(minutes: 15),
   );
 
   final myAppLifecycleObserver = MyAppLifecycleObserver();
-  WidgetsBinding.instance?.addObserver(myAppLifecycleObserver);
+  WidgetsBinding.instance.addObserver(myAppLifecycleObserver);
   // FirebaseDatabase.instance.setPersistenceEnabled(true);
   runApp(const MyApp());
 }

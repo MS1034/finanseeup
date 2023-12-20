@@ -93,19 +93,19 @@ class AccountController extends GetxController {
       }
 
       await _accountRepository.deleteAccount(account);
-      print(account);
+
       // await _accountRepository.deleteAccountLocally(account);
 
       // await _accountRepository.synchronizeCloudWithLocal;
       await getAllLocalAccounts();
 
-      print("Account deleted successfully!");
+
 
       AppFullScreenLoader.stoploading();
       Get.back();
-    } catch (e, stacktrace) {
+    } catch (e) {
       AppFullScreenLoader.stoploading();
-      print(stacktrace);
+
       print(e);
       AppLoaders.errorSnackBar(title: "Oh Sorry!", message: e.toString());
     }

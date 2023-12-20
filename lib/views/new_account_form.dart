@@ -13,10 +13,10 @@ class AddAccountView extends StatelessWidget {
 
   // Constructor for AddAccountView
   AddAccountView({
-    Key? key,
+    super.key,
     required this.controller,
     this.account, // Optional account parameter
-  }) : super(key: key) {
+  }) {
     // Use the 'account' parameter if it is provided; otherwise, create a new Account
     final Account? currentAccount = account;
 
@@ -98,7 +98,7 @@ class AddAccountView extends StatelessWidget {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red, // Set the background color
+                    backgroundColor: Colors.red, // Set the background color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                           8), // Adjust the border radius as needed
@@ -118,7 +118,7 @@ class AccountTypeField extends StatelessWidget {
   final String initialText;
 
   const AccountTypeField(
-      {Key? key, required this.controller, required this.initialText});
+      {super.key, required this.controller, required this.initialText});
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +164,7 @@ class CurrencyPickerField extends StatelessWidget {
   final String initialText;
 
   const CurrencyPickerField(
-      {Key? key, required this.controller, required this.initialText});
+      {super.key, required this.controller, required this.initialText});
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +196,7 @@ class InitialAmountField extends StatelessWidget {
   final String initialText;
 
   const InitialAmountField(
-      {Key? key, required this.controller, required this.initialText});
+      {super.key, required this.controller, required this.initialText});
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +215,7 @@ class AccountNameField extends StatelessWidget {
   final String initialText;
 
   const AccountNameField(
-      {Key? key, required this.controller, required this.initialText});
+      {super.key, required this.controller, required this.initialText});
 
   @override
   Widget build(BuildContext context) {

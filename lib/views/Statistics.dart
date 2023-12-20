@@ -6,7 +6,7 @@ import 'package:finanseeup/widgets/pieChart.dart';
 import 'package:flutter/material.dart';
 
 class Statistics extends StatefulWidget {
-  const Statistics({Key? key}) : super(key: key);
+  const Statistics({super.key});
 
   @override
   _StatisticsState createState() => _StatisticsState();
@@ -110,15 +110,15 @@ class _StatisticsState extends State<Statistics>
         return StatefulBuilder(
           builder: (context, setState) {
             return Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Filter by Date'),
-                  SizedBox(height: 8.0),
+                  const Text('Filter by Date'),
+                  const SizedBox(height: 8.0),
                   _buildFilterOptions(setState),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   // _buildDateRangePicker(setState),
                 ],
               ),
@@ -150,11 +150,11 @@ class _StatisticsState extends State<Statistics>
           _controller.filterRecords(_controller.selectedFilter);
         });
       },
-      child: Text(filter),
       style: _controller.selectedFilter == filter
           ? ElevatedButton.styleFrom(
               backgroundColor: Colors.blue, foregroundColor: Colors.white)
           : null,
+      child: Text(filter),
     );
   }
 }

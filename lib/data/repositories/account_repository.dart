@@ -148,6 +148,7 @@ class AccountRepository extends GetxController {
     } catch (e) {
       throw e.toString();
     }
+    return null;
   }
 
   Future<void> updateAccount(Account account) async {
@@ -229,11 +230,8 @@ class AccountRepository extends GetxController {
             .get();
 
         final List<Account> firebaseAccounts = snapshot.docs.map((doc) {
-          final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          final String? accountId = doc.id;
-          if (accountId == null) {
-            throw Exception('Document ID is null');
-          }
+          final Map<String, dynamic> data = doc.data();
+          final String accountId = doc.id;
           data['id'] = accountId; // Add the document ID to the data
           return Account.fromJson(data);
         }).toList();

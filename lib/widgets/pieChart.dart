@@ -8,7 +8,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 class PieChart extends StatefulWidget {
   final PieChartController controller;
 
-  PieChart({required this.controller});
+  const PieChart({super.key, required this.controller});
 
   @override
   _PieChartState createState() => _PieChartState();

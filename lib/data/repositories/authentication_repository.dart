@@ -2,7 +2,6 @@ import 'package:finanseeup/Views/sign_in.dart';
 import 'package:finanseeup/views/home.dart';
 import 'package:finanseeup/views/verify_email.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -28,11 +27,7 @@ class AuthenticationRepository extends GetxController {
   }
 
   screenRedirect() async {
-    if (kDebugMode) {
-      print("object is screen");
-      print(_auth.currentUser);
-      print("================================Subhna========================");
-    }
+
     User? user = _auth.currentUser;
     if (user != null) {
       if (user.emailVerified) {

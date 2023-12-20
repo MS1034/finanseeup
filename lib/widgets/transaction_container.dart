@@ -29,7 +29,7 @@ class RecordContainer extends StatelessWidget {
                 // Do something with the selected account, e.g., navigate to another screen
                 Get.back(result: account);
               }));
-              print("Subhanm123");
+
               if (selectedAccount != null) {
                 TransactionController.instance
                     .setSelectedAccount2(selectedAccount);

@@ -6,7 +6,7 @@ class ColorPickerField extends StatelessWidget {
   final String initialText;
 
   const ColorPickerField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.initialText,
   });

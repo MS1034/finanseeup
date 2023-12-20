@@ -12,11 +12,11 @@ import '../../models/transaction.dart';
 class TransactionRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<void> addTransaction( TransactionModel transaction, File? imageFile) async {
+  Future<void> addTransaction(
+      TransactionModel transaction, File? imageFile) async {
     try {
-      final user=AuthenticationRepository.instance.authUser;
+      final user = AuthenticationRepository.instance.authUser;
       if (user?.uid != null) {
-
         String? imageURL;
 
         if (imageFile != null) {
@@ -24,12 +24,15 @@ class TransactionRepository {
         }
         transaction.receiptImage = imageURL;
 
-        final data =transaction.toJson();
+        final data = transaction.toJson();
+        data['timestamp'] = FieldValue.serverTimestamp();
         print(data);
-        await _db.collection('transactions').doc(user?.uid).collection(
-            'user_transactions').add(data);
+        await _db
+            .collection('transactions')
+            .doc(user?.uid)
+            .collection('user_transactions')
+            .add(data);
         print("yes");
-
       }
     } on FirebaseAuthException catch (e) {
       throw AppFirebaseAuthException(e.message);
@@ -46,19 +49,17 @@ class TransactionRepository {
 
   Future<String?> uploadImage(File imageFile) async {
     try {
-      final user=AuthenticationRepository.instance.authUser;
+      final user = AuthenticationRepository.instance.authUser;
       if (user?.uid != null) {
-        String imagePath = 'images/$user.uid/${DateTime
-            .now()
-            .millisecondsSinceEpoch}.jpg';
-        UploadTask task = FirebaseStorage.instance.ref()
-            .child(imagePath)
-            .putFile(imageFile);
+        String imagePath =
+            'images/$user.uid/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        UploadTask task =
+            FirebaseStorage.instance.ref().child(imagePath).putFile(imageFile);
         await task.whenComplete(() => null);
 
         // Get download URL
-        String downloadURL = await FirebaseStorage.instance.ref(imagePath)
-            .getDownloadURL();
+        String downloadURL =
+            await FirebaseStorage.instance.ref(imagePath).getDownloadURL();
         return downloadURL;
       }
     } catch (e) {
@@ -68,15 +69,40 @@ class TransactionRepository {
     return null;
   }
 
-
-  Future<List<TransactionModel>> getTransactions() async {
+  Future<List<TransactionModel>> getTransactions({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     try {
       String? userId = AuthenticationRepository.instance.authUser?.uid;
       if (userId != null) {
-        final querySnapshot = await _db.collection('transactions').doc(userId).collection('user_transactions').get();
-        return querySnapshot.docs
-            .map((doc) => TransactionModel.fromJson(doc.data()))
-            .toList();
+        CollectionReference transactionsRef = _db
+            .collection('transactions')
+            .doc(userId)
+            .collection('user_transactions');
+
+        Query query = transactionsRef;
+
+        if (startDate != null) {
+          query = query.where('timestamp',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(startDate));
+        }
+
+        if (endDate != null) {
+          query = query.where('timestamp',
+              isLessThanOrEqualTo: Timestamp.fromDate(endDate));
+        }
+
+        final querySnapshot = await query.get();
+
+        final List<TransactionModel> transactions =
+            querySnapshot.docs.map((doc) {
+          final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          final String accountId = doc.id;
+          return TransactionModel.fromJson(data);
+        }).toList();
+
+        return transactions;
       } else {
         // Handle case where user ID is null (not authenticated)
         return [];
@@ -88,10 +114,15 @@ class TransactionRepository {
     }
   }
 
-
-  Future<void> updateTransaction(String userId, String transactionId, TransactionModel updatedTransaction) async {
+  Future<void> updateTransaction(String userId, String transactionId,
+      TransactionModel updatedTransaction) async {
     try {
-      await _db.collection('transactions').doc(userId).collection('user_transactions').doc(transactionId).update(updatedTransaction.toJson());
+      await _db
+          .collection('transactions')
+          .doc(userId)
+          .collection('user_transactions')
+          .doc(transactionId)
+          .update(updatedTransaction.toJson());
     } catch (e) {
       // Handle error
       print('Error updating transaction: $e');
@@ -101,7 +132,12 @@ class TransactionRepository {
 
   Future<void> deleteTransaction(String userId, String transactionId) async {
     try {
-      await _db.collection('transactions').doc(userId).collection('user_transactions').doc(transactionId).delete();
+      await _db
+          .collection('transactions')
+          .doc(userId)
+          .collection('user_transactions')
+          .doc(transactionId)
+          .delete();
     } catch (e) {
       // Handle error
       print('Error deleting transaction: $e');

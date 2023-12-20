@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
 import '../models/account.dart';
+import '../models/enum_period.dart';
 import '../models/enum_transaction_type.dart';
 import '../models/label.dart';
 import '../utils/consts/image_strings.dart';
@@ -28,9 +29,11 @@ class TransactionController extends GetxController {
 
   RxList<TransactionModel> get getTransactions => transactions;
 
-  TextEditingController selectedFilter = TextEditingController();
+  // RxString selectedFilter = 'all'.obs;
+  RxString selectedFilter = 'all'.obs;
+  RxBool isSelected = true.obs;
 
-  TextEditingController get SelectedFilter => selectedFilter;
+  RxBool isLoading = false.obs;
 
   // Icon based on the number
   IconData getIconBasedOnNumber(int num) {
@@ -149,6 +152,29 @@ class TransactionController extends GetxController {
   Rx<Account> get getSelectedAccount => account;
 
   Rx<Account> get getSelectedAccount2 => account2;
+
+  fetchTransactions() async {
+    try {
+      isLoading.value = true;
+      if (kDebugMode) {
+        print("object is fetch");
+      }
+      DateTime start = DateHelper.getStartOfPeriod(Period.All);
+      DateTime end = DateHelper.getEndOfPeriod(Period.All);
+      final List<TransactionModel> fetchedTransactions =
+          await _transaction.getTransactions(startDate: start, endDate: end);
+      transactions.assignAll(fetchedTransactions);
+      print(fetchedTransactions);
+      print(transactions);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching transactions: $e');
+      }
+      AppLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   void setSelectedAccount(Account newAccount) {
     print("Subhan in Account1");
@@ -375,5 +401,11 @@ class TransactionController extends GetxController {
       //       title: 'Error', message: 'Error adding record. Please try again.');
       // }
     }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchTransactions();
   }
 }

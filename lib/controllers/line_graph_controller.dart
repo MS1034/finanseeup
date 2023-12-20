@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:finanseeup/models/coordinate.dart';
 
 class LineBarGraphController {
