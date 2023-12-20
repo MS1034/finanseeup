@@ -1,28 +1,33 @@
 import 'dart:math';
-
+import 'package:finanseeup/controllers/transaction_controller.dart';
 import 'package:finanseeup/models/coordinate.dart';
 import 'package:finanseeup/models/piece.dart';
 import 'package:finanseeup/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
 
 class StatisticsController {
   late TabController tabController;
   String selectedFilter = '7D';
   DateTime startDate = DateTime.now().subtract(const Duration(days: 1));
   DateTime endDate = DateTime.now();
-  List<TransactionModel> allCoordinates = List.generate(
-    120,
-    (index) => TransactionModel(
-      accountId: ["A", "B", "C"][Random().nextInt(3)],
-      category: ["A", "B", "C", "D", "E", "F"][Random().nextInt(6)],
-      paymentType: "Cash",
-      dateTime: DateTime.now().subtract(Duration(days: Random().nextInt(71))),
-      amount: Random().nextDouble() *
-          1000.0 *
-          ((Random().nextInt(5) == 0) ? -1.0 : 1.0),
-      transactionType: ["Income", "Expense"][Random().nextInt(2)],
-    ),
-  );
+  TransactionController c = TransactionController();
+  List<TransactionModel> allCoordinates = [];
+  // c.transactions;
+  // List.generate(
+  //   120,
+  //   (index) => TransactionModel(
+  //     accountId: ["A", "B", "C"][Random().nextInt(3)],
+  //     category: ["A", "B", "C", "D", "E", "F"][Random().nextInt(6)],
+  //     paymentType: "Cash",
+  //     dateTime: DateTime.now().subtract(Duration(days: Random().nextInt(71))),
+  //     amount: Random().nextDouble() *
+  //         1000.0 *
+  //         ((Random().nextInt(5) == 0) ? -1.0 : 1.0),
+  //     transactionType: ["Income", "Expense"][Random().nextInt(2)],
+  //   ),
+  // );
   List<Coordinate> balanceTrendList = [], incomeList = [], expenseList = [];
   List<Piece> spendings = [];
 
@@ -30,7 +35,8 @@ class StatisticsController {
   StatisticsController({required this.onStateChanged});
 
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      allCoordinates = c.transactions;
       filterRecords(selectedFilter);
     });
   }

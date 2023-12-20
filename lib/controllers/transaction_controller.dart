@@ -153,26 +153,26 @@ class TransactionController extends GetxController {
 
   Rx<Account> get getSelectedAccount2 => account2;
 
-  fetchTransactions() async {
+  Future<void> fetchTransactions() async {
     try {
-      isLoading.value = true;
-      if (kDebugMode) {
-        print("object is fetch");
+      AppFullScreenLoader.openLoadingDialog(
+          "Fetching transactions", AppImages.singleCoin);
+      final isConnected = await _networkManager.isConnected();
+
+      if (!isConnected) {
+        AppFullScreenLoader.stoploading();
+        return;
       }
-      DateTime start = DateHelper.getStartOfPeriod(Period.All);
-      DateTime end = DateHelper.getEndOfPeriod(Period.All);
+
       final List<TransactionModel> fetchedTransactions =
-          await _transaction.getTransactions(startDate: start, endDate: end);
+          await getTransactions();
       transactions.assignAll(fetchedTransactions);
-      print(fetchedTransactions);
-      print(transactions);
+
+      AppFullScreenLoader.stoploading();
     } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching transactions: $e');
-      }
-      AppLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
-    } finally {
-      isLoading.value = false;
+      AppFullScreenLoader.stoploading();
+      print('Error fetching transactions: $e');
+      // Handle error
     }
   }
 

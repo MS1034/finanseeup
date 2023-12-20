@@ -10,6 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'data/repositories/authentication_repository.dart';
+import 'data/localDb_helper.dart';
 
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
@@ -28,6 +29,10 @@ Future<void> main() async {
       .then((value) {
     Get.put(AuthenticationRepository());
   });
+
+  final DatabaseHelper localDatabaseHelper = DatabaseHelper();
+  await localDatabaseHelper.openDB();
+  await localDatabaseHelper.printTablesWithRowCount();
 
   Workmanager().initialize(
     callbackDispatcher,
