@@ -33,3 +33,22 @@ Map<String, dynamic> _$GoalToJson(Goal instance) {
   writeNotNull('note', instance.note);
   return val;
 }
+
+Map<String, dynamic> _$GoalToJsonLocally(Goal instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  val['name'] = instance.name;
+  val['amount'] = instance.amount;
+  val['moneySaved'] = instance.moneySaved;
+  val['desiredDate'] = instance.desiredDate.toIso8601String();
+  val['color'] = const ColorSerializer().toJson(instance.color);
+  writeNotNull('note', instance.note);
+  return val;
+}

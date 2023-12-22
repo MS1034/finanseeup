@@ -1,3 +1,4 @@
+import 'package:finanseeup/data/repositories/category_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,6 +30,7 @@ class DatabaseHelper {
     _database = await openDatabase(join(path, databaseName),
         version: databaseVersion, onCreate: _onCreate);
 
+    CategoriesRepository.setUp();
     return _database;
   }
 
@@ -45,8 +47,17 @@ class DatabaseHelper {
     }
   }
 
+  static Database? getDb() {
+    return _database;
+  }
+
+  static showDbError() {
+    print("Local Database not initialized");
+  }
+
   Future<void> printTablesWithRowCount() async {
     if (_database == null) {
+      print("Local Database not initialized");
       return;
     }
 
@@ -56,5 +67,18 @@ class DatabaseHelper {
       )!;
       print('Table: $tableName, Row Count: $rowCount');
     }
+  }
+
+  Future<void> removeTable(String tableName) async {
+    if (_database == null) {
+      print("Local Database not initialized");
+      return;
+    }
+
+    await _database!.execute('DROP TABLE IF EXISTS $tableName');
+    // Remove the table from the sqlite_master table
+    // await _database!.rawDelete(
+    //     "DELETE FROM sqlite_master WHERE type='table' AND name='$tableName'");
+    print("sa");
   }
 }

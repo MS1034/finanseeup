@@ -1,9 +1,11 @@
+import 'package:finanseeup/models/crud_model.dart';
+import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'transaction.g.dart';
 
 @JsonSerializable()
-class TransactionModel {
+class TransactionModel extends CrudModel {
   @JsonKey(includeIfNull: false)
   final String? id;
 
@@ -41,10 +43,23 @@ class TransactionModel {
       this.payee,
       this.dateTime,
       this.transactionType,
-      this.id});
+      this.id})
+      : accountIdTo = '',
+        receiptImage = '';
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       _$TransactionModelFromJson(json);
 
+  factory TransactionModel.fromJsonLocally(Map<String, dynamic> json) =>
+      _$TransactionModelFromJsonLocally(json);
+
   Map<String, dynamic> toJson() => _$TransactionModelToJson(this);
+
+  @override
+  Map<String, dynamic> toJsonLocally() => _$TransactionModelToJsonLocally(this);
+
+  // @override
+  // TransactionModel fromJson(Map<String, dynamic> json) {
+  //   return _$TransactionModelFromJson(json);
+  // }
 }
